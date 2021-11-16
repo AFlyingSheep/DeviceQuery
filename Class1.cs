@@ -65,7 +65,6 @@ namespace FVD.Common
             this.textBox1.TabIndex = 0;
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.IPv4TextBox_KeyPress);
-            this.textBox1.Text = "127";
             // 
             // textBox2
             // 
@@ -76,7 +75,6 @@ namespace FVD.Common
             this.textBox2.TabIndex = 1;
             this.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.textBox2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.IPv4TextBox_KeyPress);
-            this.textBox2.Text = "0";
             // 
             // textBox3
             // 
@@ -87,7 +85,6 @@ namespace FVD.Common
             this.textBox3.TabIndex = 2;
             this.textBox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.textBox3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.IPv4TextBox_KeyPress);
-            this.textBox3.Text = "0";
             // 
             // textBox4
             // 
@@ -98,7 +95,6 @@ namespace FVD.Common
             this.textBox4.TabIndex = 3;
             this.textBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.textBox4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.IPv4TextBox_KeyPress);
-            this.textBox4.Text = "1";
             // 
             // label1
             // 

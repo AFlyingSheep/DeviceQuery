@@ -1,19 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Net;
-using System.Net.Sockets;
-using System.Threading;
-using System.Runtime.InteropServices;
-using System.Diagnostics;
-using System.IO;
-
+﻿
 namespace DeviceExplorer
 {
     partial class DeviceExplorer
@@ -275,8 +260,6 @@ namespace DeviceExplorer
             this.RIA.Size = new System.Drawing.Size(167, 35);
             this.RIA.TabIndex = 12;
             this.RIA.Value = ((System.Net.IPAddress)(resources.GetObject("RIA.Value")));
-
-            
             // 
             // BIA
             // 
@@ -286,10 +269,7 @@ namespace DeviceExplorer
             this.BIA.Name = "BIA";
             this.BIA.Size = new System.Drawing.Size(167, 35);
             this.BIA.TabIndex = 11;
-            this.BIA.Value = System.Net.IPAddress.Parse("127.0.0.1");
-
-            
-            
+            this.BIA.Value = ((System.Net.IPAddress)(resources.GetObject("BIA.Value")));
             // 
             // DeviceExplorer
             // 
