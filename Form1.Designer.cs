@@ -177,11 +177,11 @@ namespace DeviceExplorer
             // LabelDevicesNumber
             // 
             this.LabelDevicesNumber.AutoSize = true;
-            this.LabelDevicesNumber.Location = new System.Drawing.Point(170, 395);
+            this.LabelDevicesNumber.Location = new System.Drawing.Point(139, 395);
             this.LabelDevicesNumber.Name = "LabelDevicesNumber";
-            this.LabelDevicesNumber.Size = new System.Drawing.Size(55, 15);
+            this.LabelDevicesNumber.Size = new System.Drawing.Size(15, 15);
             this.LabelDevicesNumber.TabIndex = 5;
-            this.LabelDevicesNumber.Text = "114514";
+            this.LabelDevicesNumber.Text = "0";
             // 
             // LabelDevicesFound
             // 
