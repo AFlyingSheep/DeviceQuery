@@ -182,11 +182,6 @@ namespace DeviceExplorer
         {
             this.ListBoxDevices.Items.Clear();
         }
-
-        private void ipAddressTextBox2_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }
 

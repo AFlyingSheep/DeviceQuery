@@ -121,6 +121,7 @@ namespace DeviceExplorer
             this.ComboBoxBrowseMode.Name = "ComboBoxBrowseMode";
             this.ComboBoxBrowseMode.Size = new System.Drawing.Size(157, 23);
             this.ComboBoxBrowseMode.TabIndex = 4;
+            this.ComboBoxBrowseMode.SelectedIndex = 0;
             // 
             // panel1
             // 
@@ -298,7 +299,7 @@ namespace DeviceExplorer
             this.ipAddressTextBox1.Name = "ipAddressTextBox1";
             this.ipAddressTextBox1.Size = new System.Drawing.Size(167, 35);
             this.ipAddressTextBox1.TabIndex = 13;
-            this.ipAddressTextBox1.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBox1.Value")));
+            //this.ipAddressTextBox1.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBox1.Value")));
             // 
             // ipAddressTextBox2
             // 
@@ -308,8 +309,7 @@ namespace DeviceExplorer
             this.ipAddressTextBox2.Name = "ipAddressTextBox2";
             this.ipAddressTextBox2.Size = new System.Drawing.Size(167, 28);
             this.ipAddressTextBox2.TabIndex = 14;
-            this.ipAddressTextBox2.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBox2.Value")));
-            this.ipAddressTextBox2.Load += new System.EventHandler(this.ipAddressTextBox2_Load);
+            //this.ipAddressTextBox2.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBox2.Value")));
             // 
             // DeviceExplorer
             // 
