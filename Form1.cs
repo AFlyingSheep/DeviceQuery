@@ -17,9 +17,9 @@ using System.IO;
 
 
 
-namespace DeviceExplorer 
+namespace DeviceExplorer
 {
-    public partial class DeviceExplorer : Form 
+    public partial class DeviceExplorer : Form
     {
         static IPEndPoint localIpep = null;
         private static UdpClient udpcSend = null;
@@ -30,8 +30,8 @@ namespace DeviceExplorer
         static byte[] udpRecv2 = new byte[1024000];
         static int countOfRecieve = 0;
 
-        static bool IsStart = false ;
-        Device[] device =new Device[1000];
+        static bool IsStart = false;
+        Device[] device = new Device[1000];
         static int index = 0;
         public DeviceExplorer()
         {
@@ -40,7 +40,7 @@ namespace DeviceExplorer
 
         private void ButtonStart_Click(object sender, EventArgs e)
         {
-            if(IsStart == true)
+            if (IsStart == true)
             {
                 MessageBox.Show("请不要重复开始！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
@@ -73,14 +73,14 @@ namespace DeviceExplorer
                                     IPAddress ip = localIpep.Address;
                                     device[index] = new Device();
                                     device[index].ips = ip.ToString();
-                                    device[index].Vendor = udpRecv[48]+udpRecv[49]*16;
-                                    device[index].SerialNumber = "0x"+
-                                        Convert.ToString(udpRecv[61], 16) + 
-                                        Convert.ToString(udpRecv[60], 16) + 
-                                        Convert.ToString(udpRecv[59], 16)+ 
+                                    device[index].Vendor = udpRecv[48] + udpRecv[49] * 16;
+                                    device[index].SerialNumber = "0x" +
+                                        Convert.ToString(udpRecv[61], 16) +
+                                        Convert.ToString(udpRecv[60], 16) +
+                                        Convert.ToString(udpRecv[59], 16) +
                                         Convert.ToString(udpRecv[58], 16);
                                     if (index >= 1000) index = 0;
-                                    this.ListBoxDevices.Items.Add(device[index].ips+"/");
+                                    this.ListBoxDevices.Items.Add(device[index].ips + "/");
                                     index++;
                                 }
                             }
@@ -100,7 +100,7 @@ namespace DeviceExplorer
                                 */
                                 this.LabelDevicesNumber.Text = index.ToString();
                                 this.LabelStatusText.Text = "接收成功！";
-                                
+
                             }
                             break;
 
@@ -120,7 +120,7 @@ namespace DeviceExplorer
                 }
 
             }
-            
+
 
 
         }
@@ -131,15 +131,15 @@ namespace DeviceExplorer
                 try
                 {
                     byte[] b = new byte[100];
-                    if(index < 200)
+                    if (index < 200)
                     {
                         udpRecv = udpcRecv.Receive(ref localIpep);
                     }
                     else
                     {
-                        udpRecv2= udpcRecv.Receive(ref localIpep);
+                        udpRecv2 = udpcRecv.Receive(ref localIpep);
                     }
-                    
+
                     //确定收到无误
                     IsUdpcRecvSuccess = true;
                     udpDiswrap(b);
@@ -165,22 +165,27 @@ namespace DeviceExplorer
                 udpcSend.Close();
                 this.LabelStatusText.Text = "成功关闭";
             }
-            
+
         }
 
-        public void udpDiswrap(byte[] b) 
+        public void udpDiswrap(byte[] b)
         {
             IPAddress ip = localIpep.Address;
-            device[index] =new Device();
+            device[index] = new Device();
             device[index++].ips = ip.ToString();
             if (index >= 1000) index = 0;
 
-            
+
         }
 
         private void ButtonClear_Click(object sender, EventArgs e)
         {
             this.ListBoxDevices.Items.Clear();
+        }
+
+        private void ipAddressTextBox2_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

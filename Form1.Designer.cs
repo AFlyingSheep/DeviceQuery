@@ -309,6 +309,7 @@ namespace DeviceExplorer
             this.ipAddressTextBox2.Size = new System.Drawing.Size(167, 28);
             this.ipAddressTextBox2.TabIndex = 14;
             this.ipAddressTextBox2.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBox2.Value")));
+            this.ipAddressTextBox2.Load += new System.EventHandler(this.ipAddressTextBox2_Load);
             // 
             // DeviceExplorer
             // 
