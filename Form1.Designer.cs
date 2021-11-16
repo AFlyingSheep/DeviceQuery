@@ -67,6 +67,8 @@ namespace DeviceExplorer
             this.LabelStatusText = new System.Windows.Forms.Label();
             this.RIA = new FVD.Common.IPAddressTextBox();
             this.BIA = new FVD.Common.IPAddressTextBox();
+            this.ipAddressTextBox1 = new FVD.Common.IPAddressTextBox();
+            this.ipAddressTextBox2 = new FVD.Common.IPAddressTextBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -119,34 +121,34 @@ namespace DeviceExplorer
             this.ComboBoxBrowseMode.Name = "ComboBoxBrowseMode";
             this.ComboBoxBrowseMode.Size = new System.Drawing.Size(157, 23);
             this.ComboBoxBrowseMode.TabIndex = 4;
-            this.ComboBoxBrowseMode.SelectedIndex = 0;
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.Control;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.ipAddressTextBox1);
             this.panel1.Controls.Add(this.ButtonRemove);
             this.panel1.Controls.Add(this.ButtonAdd);
             this.panel1.Controls.Add(this.ListBoxPointToPointIPAddress);
             this.panel1.Location = new System.Drawing.Point(43, 121);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(250, 426);
+            this.panel1.Size = new System.Drawing.Size(278, 426);
             this.panel1.TabIndex = 5;
             // 
             // ButtonRemove
             // 
-            this.ButtonRemove.Location = new System.Drawing.Point(166, 64);
+            this.ButtonRemove.Location = new System.Drawing.Point(190, 69);
             this.ButtonRemove.Name = "ButtonRemove";
-            this.ButtonRemove.Size = new System.Drawing.Size(75, 34);
+            this.ButtonRemove.Size = new System.Drawing.Size(70, 34);
             this.ButtonRemove.TabIndex = 2;
             this.ButtonRemove.Text = "Remove";
             this.ButtonRemove.UseVisualStyleBackColor = true;
             // 
             // ButtonAdd
             // 
-            this.ButtonAdd.Location = new System.Drawing.Point(166, 25);
+            this.ButtonAdd.Location = new System.Drawing.Point(190, 27);
             this.ButtonAdd.Name = "ButtonAdd";
-            this.ButtonAdd.Size = new System.Drawing.Size(70, 33);
+            this.ButtonAdd.Size = new System.Drawing.Size(70, 35);
             this.ButtonAdd.TabIndex = 1;
             this.ButtonAdd.Text = "Add";
             this.ButtonAdd.UseVisualStyleBackColor = true;
@@ -155,9 +157,9 @@ namespace DeviceExplorer
             // 
             this.ListBoxPointToPointIPAddress.FormattingEnabled = true;
             this.ListBoxPointToPointIPAddress.ItemHeight = 15;
-            this.ListBoxPointToPointIPAddress.Location = new System.Drawing.Point(19, 64);
+            this.ListBoxPointToPointIPAddress.Location = new System.Drawing.Point(16, 69);
             this.ListBoxPointToPointIPAddress.Name = "ListBoxPointToPointIPAddress";
-            this.ListBoxPointToPointIPAddress.Size = new System.Drawing.Size(137, 319);
+            this.ListBoxPointToPointIPAddress.Size = new System.Drawing.Size(163, 334);
             this.ListBoxPointToPointIPAddress.TabIndex = 0;
             // 
             // panel2
@@ -196,7 +198,7 @@ namespace DeviceExplorer
             // 
             this.ButtonClear.Location = new System.Drawing.Point(231, 109);
             this.ButtonClear.Name = "ButtonClear";
-            this.ButtonClear.Size = new System.Drawing.Size(75, 23);
+            this.ButtonClear.Size = new System.Drawing.Size(75, 34);
             this.ButtonClear.TabIndex = 3;
             this.ButtonClear.Text = "Clear";
             this.ButtonClear.UseVisualStyleBackColor = true;
@@ -204,9 +206,9 @@ namespace DeviceExplorer
             // 
             // ButtonStop
             // 
-            this.ButtonStop.Location = new System.Drawing.Point(231, 64);
+            this.ButtonStop.Location = new System.Drawing.Point(231, 69);
             this.ButtonStop.Name = "ButtonStop";
-            this.ButtonStop.Size = new System.Drawing.Size(75, 23);
+            this.ButtonStop.Size = new System.Drawing.Size(75, 34);
             this.ButtonStop.TabIndex = 2;
             this.ButtonStop.Text = "Stop";
             this.ButtonStop.UseVisualStyleBackColor = true;
@@ -214,9 +216,9 @@ namespace DeviceExplorer
             // 
             // ButtonStart
             // 
-            this.ButtonStart.Location = new System.Drawing.Point(231, 25);
+            this.ButtonStart.Location = new System.Drawing.Point(231, 27);
             this.ButtonStart.Name = "ButtonStart";
-            this.ButtonStart.Size = new System.Drawing.Size(75, 23);
+            this.ButtonStart.Size = new System.Drawing.Size(75, 35);
             this.ButtonStart.TabIndex = 1;
             this.ButtonStart.Text = "Start";
             this.ButtonStart.UseVisualStyleBackColor = true;
@@ -284,15 +286,36 @@ namespace DeviceExplorer
             this.BIA.Location = new System.Drawing.Point(203, 27);
             this.BIA.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.BIA.Name = "BIA";
-            this.BIA.Size = new System.Drawing.Size(167, 35);
+            this.BIA.Size = new System.Drawing.Size(167, 29);
             this.BIA.TabIndex = 11;
             this.BIA.Value = ((System.Net.IPAddress)(resources.GetObject("BIA.Value")));
+            // 
+            // ipAddressTextBox1
+            // 
+            this.ipAddressTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ipAddressTextBox1.Location = new System.Drawing.Point(16, 27);
+            this.ipAddressTextBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ipAddressTextBox1.Name = "ipAddressTextBox1";
+            this.ipAddressTextBox1.Size = new System.Drawing.Size(167, 35);
+            this.ipAddressTextBox1.TabIndex = 13;
+            this.ipAddressTextBox1.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBox1.Value")));
+            // 
+            // ipAddressTextBox2
+            // 
+            this.ipAddressTextBox2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ipAddressTextBox2.Location = new System.Drawing.Point(591, 66);
+            this.ipAddressTextBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ipAddressTextBox2.Name = "ipAddressTextBox2";
+            this.ipAddressTextBox2.Size = new System.Drawing.Size(167, 28);
+            this.ipAddressTextBox2.TabIndex = 14;
+            this.ipAddressTextBox2.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBox2.Value")));
             // 
             // DeviceExplorer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 596);
+            this.Controls.Add(this.ipAddressTextBox2);
             this.Controls.Add(this.RIA);
             this.Controls.Add(this.BIA);
             this.Controls.Add(this.LabelStatusText);
@@ -342,6 +365,8 @@ namespace DeviceExplorer
         private System.Windows.Forms.Label LabelStatusText;
         private FVD.Common.IPAddressTextBox BIA;
         private FVD.Common.IPAddressTextBox RIA;
+        private FVD.Common.IPAddressTextBox ipAddressTextBox1;
+        private FVD.Common.IPAddressTextBox ipAddressTextBox2;
     }
 }
 

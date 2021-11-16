@@ -18,3 +18,13 @@ D:\Users\赵阳\Desktop\123123\DeviceExplorer\obj\Debug\DeviceExplorer.csproj.Co
 D:\Users\赵阳\Desktop\123123\DeviceExplorer\obj\Debug\DeviceExplorer.exe
 D:\Users\赵阳\Desktop\123123\DeviceExplorer\obj\Debug\DeviceExplorer.pdb
 D:\Users\赵阳\Desktop\123123\DeviceExplorer\obj\Debug\DeviceExplorer.DeviceExplorer.resources
+D:\GitHub\device-query\bin\Debug\DeviceExplorer.exe.config
+D:\GitHub\device-query\bin\Debug\DeviceExplorer.exe
+D:\GitHub\device-query\bin\Debug\DeviceExplorer.pdb
+D:\GitHub\device-query\obj\Debug\DeviceExplorer.csproj.AssemblyReference.cache
+D:\GitHub\device-query\obj\Debug\DeviceExplorer.DeviceExplorer.resources
+D:\GitHub\device-query\obj\Debug\DeviceExplorer.Properties.Resources.resources
+D:\GitHub\device-query\obj\Debug\DeviceExplorer.csproj.GenerateResource.cache
+D:\GitHub\device-query\obj\Debug\DeviceExplorer.csproj.CoreCompileInputs.cache
+D:\GitHub\device-query\obj\Debug\DeviceExplorer.exe
+D:\GitHub\device-query\obj\Debug\DeviceExplorer.pdb
