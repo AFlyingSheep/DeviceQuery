@@ -1,0 +1,20 @@
+D:\Visual Studio\C#\DeviceExplorer\bin\Debug\DeviceExplorer.exe.config
+D:\Visual Studio\C#\DeviceExplorer\bin\Debug\DeviceExplorer.exe
+D:\Visual Studio\C#\DeviceExplorer\bin\Debug\DeviceExplorer.pdb
+D:\Visual Studio\C#\DeviceExplorer\obj\Debug\DeviceExplorer.csproj.AssemblyReference.cache
+D:\Visual Studio\C#\DeviceExplorer\obj\Debug\DeviceExplorer.Properties.Resources.resources
+D:\Visual Studio\C#\DeviceExplorer\obj\Debug\DeviceExplorer.csproj.GenerateResource.cache
+D:\Visual Studio\C#\DeviceExplorer\obj\Debug\DeviceExplorer.csproj.CoreCompileInputs.cache
+D:\Visual Studio\C#\DeviceExplorer\obj\Debug\DeviceExplorer.exe
+D:\Visual Studio\C#\DeviceExplorer\obj\Debug\DeviceExplorer.pdb
+D:\Visual Studio\C#\DeviceExplorer\obj\Debug\DeviceExplorer.DeviceExplorer.resources
+D:\Users\赵阳\Desktop\123123\DeviceExplorer\bin\Debug\DeviceExplorer.exe.config
+D:\Users\赵阳\Desktop\123123\DeviceExplorer\bin\Debug\DeviceExplorer.exe
+D:\Users\赵阳\Desktop\123123\DeviceExplorer\bin\Debug\DeviceExplorer.pdb
+D:\Users\赵阳\Desktop\123123\DeviceExplorer\obj\Debug\DeviceExplorer.csprojAssemblyReference.cache
+D:\Users\赵阳\Desktop\123123\DeviceExplorer\obj\Debug\DeviceExplorer.Properties.Resources.resources
+D:\Users\赵阳\Desktop\123123\DeviceExplorer\obj\Debug\DeviceExplorer.csproj.GenerateResource.cache
+D:\Users\赵阳\Desktop\123123\DeviceExplorer\obj\Debug\DeviceExplorer.csproj.CoreCompileInputs.cache
+D:\Users\赵阳\Desktop\123123\DeviceExplorer\obj\Debug\DeviceExplorer.exe
+D:\Users\赵阳\Desktop\123123\DeviceExplorer\obj\Debug\DeviceExplorer.pdb
+D:\Users\赵阳\Desktop\123123\DeviceExplorer\obj\Debug\DeviceExplorer.DeviceExplorer.resources
