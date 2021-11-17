@@ -1,18 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using System.Runtime.InteropServices;
-using System.Diagnostics;
-using System.IO;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 
 
@@ -23,16 +14,14 @@ namespace DeviceExplorer
     {
         static IPEndPoint localIpep = null;
         private static UdpClient udpcSend = null;
-        static UdpClient udpcRecv = null;
-        static bool IsUdpcRecvStart = false;
-        static bool IsUdpcRecvSuccess = false;
         static byte[] udpRecv = new byte[1024000];
-        static byte[] udpRecv2 = new byte[1024000];
-        static int countOfRecieve = 0;
 
         static bool IsStart = false;
         Device[] device = new Device[1000];
         static int index = 0;
+
+        static Thread clock;
+        static bool needToFlush = false;
         public DeviceExplorer()
         {
             InitializeComponent();
@@ -49,20 +38,21 @@ namespace DeviceExplorer
                 IsStart = true;
                 index = 0;
                 int item = ComboBoxBrowseMode.SelectedIndex;
-                countOfRecieve = 0;
                 switch (item)
                 {
                     case 0:
                         {
-
+                            needToFlush = true;
+                            clock = new Thread(clockCount);
+                            clock.Start();
                             this.ListBoxDevices.Items.Clear();
                             this.LabelStatusText.Text = "发送中……";
                             localIpep = new IPEndPoint(BIA.Value, 44814); // 本机IP和监听端口号
                             udpcSend = new UdpClient(localIpep);
                             udpcSend.Client.ReceiveTimeout = 10;
                             byte[] sendbytes = { 0x63, 00, 00, 00, 00, 00, 00,
-                            00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
-                            00, 00, 00, 00, 00 };
+                                00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
+                                00, 00, 00, 00, 00 };
                             IPEndPoint remoteIpep = new IPEndPoint(IPAddress.Parse("255.255.255.255"), 44818); // 发送到的IP地址和端口号
                             udpcSend.Send(sendbytes, sendbytes.Length, remoteIpep);
                             try
@@ -90,23 +80,12 @@ namespace DeviceExplorer
                             }
                             finally
                             {
-                                /*udpcSend.Close();
-                                localIpep = new IPEndPoint(BIA.Value, 44814); // 本机IP和监听端口号
-                                udpcRecv = new UdpClient(localIpep);
-                                thrRecv = new Thread(ReceiveMessage);
-                                thrRecv.Start();
-                                IsUdpcRecvStart = true;
-                                this.LabelStatusText.Text = "UDP监听器已成功启动,接受中……";
-                                */
                                 this.LabelDevicesNumber.Text = index.ToString();
                                 this.LabelStatusText.Text = "接收成功！";
-
+                                needToFlush = false;
+                                udpcSend.Close();
                             }
                             break;
-
-
-
-
                         }
                     case 1:
                         {
@@ -124,34 +103,6 @@ namespace DeviceExplorer
 
 
         }
-        private void ReceiveMessage(object obj)
-        {
-            while (IsUdpcRecvStart)
-            {
-                try
-                {
-                    byte[] b = new byte[100];
-                    if (index < 200)
-                    {
-                        udpRecv = udpcRecv.Receive(ref localIpep);
-                    }
-                    else
-                    {
-                        udpRecv2 = udpcRecv.Receive(ref localIpep);
-                    }
-
-                    //确定收到无误
-                    IsUdpcRecvSuccess = true;
-                    udpDiswrap(b);
-                    countOfRecieve++;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    break;
-                }
-            }
-        }
 
         private void ButtonStop_Click(object sender, EventArgs e)
         {
@@ -161,8 +112,8 @@ namespace DeviceExplorer
             }
             else
             {
+                clock.Abort();
                 IsStart = false;
-                udpcSend.Close();
                 this.LabelStatusText.Text = "成功关闭";
             }
 
@@ -178,9 +129,29 @@ namespace DeviceExplorer
 
         }
 
+        public void clockCount()
+        {
+            Thread.Sleep(5000);
+            index = 0;
+        }
         private void ButtonClear_Click(object sender, EventArgs e)
         {
             this.ListBoxDevices.Items.Clear();
+        }
+        private void listBoxDevices_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            int index = this.ListBoxDevices.IndexFromPoint(e.Location);
+            if (index == -1)
+            {
+                return;
+            }
+            MessageBox.Show(
+                "Address:               " + device[index].ips + "\n" +
+                "Vendor:                " + device[index].Vendor + "\n" +
+                "Product Type:      " + device[index].ProductType + "\n" +
+                "Serial Number:    " + device[index].SerialNumber + "\n"
+                , "Device Properties", MessageBoxButtons.OK, MessageBoxIcon.Information
+                );
         }
     }
 }
