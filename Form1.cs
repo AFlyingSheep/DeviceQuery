@@ -37,219 +37,211 @@ namespace DeviceExplorer
         //开始单击Event
         private void ButtonStart_Click(object sender, EventArgs e)
         {
-            // 如已经开启，抛出警报
-            if (IsStart == true)
+            ButtonStop.Enabled = true;
+            ButtonStart.Enabled = false;
+
+            index = 0;
+            this.treeView1.Nodes.Clear();
+            //模式选择 0 1 2 3
+            int item = ComboBoxBrowseMode.SelectedIndex;
+            switch (item)
             {
-                MessageBox.Show("请先结束！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            else
-            {
-                IsStart = true;
-                index = 0;
-                //模式选择 0 1 2 3
-                int item = ComboBoxBrowseMode.SelectedIndex;
-                switch (item)
-                {
-                    // 本地广播
-                    case 0:
+                // 本地广播
+                case 0:
+                    {
+                        needToFlush = true;
+
+                        // 计时器线程
+                        clock = new Thread(clockCount);
+                        clock.Start();
+
+                        // 状态变更
+                        this.LabelStatusText.Text = "发送中……";
+
+                        // 本机IP和监听端口号
+                        localIpep = new IPEndPoint(BIA.Value, 44814);
+
+                        // 发送UDP访问报文
+                        udpConnect = new UdpClient(localIpep);
+                        udpConnect.Client.ReceiveTimeout = 100;
+                        byte[] sendbytes = { 0x63, 00, 00, 00, 00, 00, 00,
+                            00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
+                            00, 00, 00, 00, 00 };
+
+                        IPEndPoint remoteIpep = new IPEndPoint(IPAddress.Parse("255.255.255.255"), 44818); // 发送到的IP地址和端口号
+                        udpConnect.Send(sendbytes, sendbytes.Length, remoteIpep);
+
+                        // 接收回传报文
+                        try
                         {
-                            needToFlush = true;
-
-                            // 计时器线程
-                            clock = new Thread(clockCount);
-                            clock.Start();
-
-                            // 清空设备列表
-                            this.ListBoxDevices.Items.Clear();
-
-                            // 状态变更
-                            this.LabelStatusText.Text = "发送中……";
-
-                            // 本机IP和监听端口号
-                            localIpep = new IPEndPoint(BIA.Value, 44814);
-
-                            // 发送UDP访问报文
-                            udpConnect = new UdpClient(localIpep);
-                            udpConnect.Client.ReceiveTimeout = 100;
-                            byte[] sendbytes = { 0x63, 00, 00, 00, 00, 00, 00,
-                                00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
-                                00, 00, 00, 00, 00 };
-
-                            IPEndPoint remoteIpep = new IPEndPoint(IPAddress.Parse("255.255.255.255"), 44818); // 发送到的IP地址和端口号
-                            udpConnect.Send(sendbytes, sendbytes.Length, remoteIpep);
-
-                            // 接收回传报文
-                            try
+                            while (true)
                             {
-                                while (true)
-                                {
-                                    // udpRecv接收数组，单次接收
-                                    // 读取缓冲区数据
-                                    udpRecv = udpConnect.Receive(ref localIpep);
-                                    IPAddress ip = localIpep.Address;
-
-                                    // 数组解包
-                                    packageUnwarp(ref device[index], udpRecv, ip);
-
-
-                                    // 当index大于最大设备数组，重置index
-                                    if (index >= MaxDevicesNumber) index = 0;
-
-                                    // 将设备添加到listbox中
-                                    this.ListBoxDevices.Items.Add(device[index].ips + "-" + device[index].DeviceName);
-                                    index++;
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine(ex);
-                            }
-                            finally
-                            {
-                                // 显示共捕捉输出设备数
-                                this.LabelDevicesNumber.Text = index.ToString();
-                                this.LabelStatusText.Text = "接收成功！已接受数目：" + index.ToString();
-                                needToFlush = false;
-                                // 关闭udp连接
-                                udpConnect.Close();
-                            }
-                            break;
-                        }
-                    case 1:
-                        {
-                            // 统计同游多少条需要发送的ip并转化为数组
-                            int sumIp = ListBoxPointToPointIPAddress.Items.Count;
-                            String[] ipString = new string[sumIp];
-
-                            // 开启定时器
-                            clock = new Thread(clockCount);
-                            clock.Start();
-
-                            // 将ip转化为string存入字符串数组
-                            for (int i = 0; i < sumIp; i++)
-                            {
-                                ipString[i] = ListBoxPointToPointIPAddress.Items[i].ToString();
-                            }
-
-                            // 更改状态
-                            this.ListBoxDevices.Items.Clear();
-                            this.LabelStatusText.Text = "发送中……";
-
-                            // 向每个目标发送udp
-                            for (int i = 0; i < sumIp; i++)
-                            {
-                                // 配置发送Udp
-                                localIpep = new IPEndPoint(BIA.Value, 44814); // 本机IP和监听端口号
-                                udpConnect = new UdpClient(localIpep);
-                                udpConnect.Client.ReceiveTimeout = 100;
-                                byte[] sendbytes = { 0x63, 00, 00, 00, 00, 00, 00,
-                                00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
-                                00, 00, 00, 00, 00 };
-                                //发送
-                                IPEndPoint remoteIpep = new IPEndPoint(IPAddress.Parse(ipString[i]), 44818); // 发送到的IP地址和端口号
-                                udpConnect.Send(sendbytes, sendbytes.Length, remoteIpep);
-
-                                try
-                                {
-                                    // 接收udp，捕捉接收超时Exception
-                                    udpRecv = udpConnect.Receive(ref localIpep);
-                                }
-                                catch (Exception ex)
-                                {
-                                    continue;
-                                }
-
+                                // udpRecv接收数组，单次接收
+                                // 读取缓冲区数据
+                                udpRecv = udpConnect.Receive(ref localIpep);
                                 IPAddress ip = localIpep.Address;
 
-                                // 对接受进行解码
+                                // 数组解包
                                 packageUnwarp(ref device[index], udpRecv, ip);
 
-                                if (index >= 1000) index = 0;
 
-                                // 添加入listbox
-                                this.ListBoxDevices.Items.Add(device[index].ips + "-" + device[index].DeviceName);
+                                // 当index大于最大设备数组，重置index
+                                if (index >= MaxDevicesNumber) index = 0;
+
+                                // 获取主机名
+                                string name = getHostNameFun(BIA.Value.ToString());
+
+                                // 将设备添加到treeview中
+                                addItemTree(name,device[index]);
                                 index++;
-                                this.LabelDevicesNumber.Text = index.ToString();
-
-                                needToFlush = false;
-                                udpConnect.Close();
                             }
-
-                            this.LabelStatusText.Text = "接收成功！已接受数目：" + index.ToString();
-                            this.LabelDevicesNumber.Text = index.ToString();
-
-
-                            break;
                         }
-                    case 2:
+                        catch (Exception ex)
                         {
-                            //子网掩码、IP及广播地址的计算
-                            String mask = RSM.Value.ToString();
-                            String remoteIp = RIA.Value.ToString();
-                            String boardcastIP = GetBroadcast(remoteIp, mask);
-                            // 计时器线程
-                            clock = new Thread(clockCount);
-                            clock.Start();
+                            Console.WriteLine(ex);
+                        }
+                        finally
+                        {
+                            // 显示共捕捉输出设备数
+                            this.LabelDevicesNumber.Text = index.ToString();
+                            this.LabelStatusText.Text = "接收成功！已接受数目：" + index.ToString();
+                            needToFlush = false;
+                            // 关闭udp连接
+                            udpConnect.Close();
+                        }
+                        break;
+                    }
+                case 1:
+                    {
+                        // 统计同游多少条需要发送的ip并转化为数组
+                        int sumIp = ListBoxPointToPointIPAddress.Items.Count;
+                        String[] ipString = new string[sumIp];
 
-                            // 清空设备列表
-                            this.ListBoxDevices.Items.Clear();
+                        // 开启定时器
+                        clock = new Thread(clockCount);
+                        clock.Start();
 
-                            // 状态变更
-                            this.LabelStatusText.Text = "发送中……";
+                        // 将ip转化为string存入字符串数组
+                        for (int i = 0; i < sumIp; i++)
+                        {
+                            ipString[i] = ListBoxPointToPointIPAddress.Items[i].ToString();
+                        }
 
-                            // 本机IP和监听端口号
-                            localIpep = new IPEndPoint(BIA.Value, 44814);
+                        // 更改状态
+                        this.treeView1.Nodes.Clear();
+                        this.LabelStatusText.Text = "发送中……";
 
-                            // 发送UDP访问报文
+                        // 向每个目标发送udp
+                        for (int i = 0; i < sumIp; i++)
+                        {
+                            // 配置发送Udp
+                            localIpep = new IPEndPoint(BIA.Value, 44814); // 本机IP和监听端口号
                             udpConnect = new UdpClient(localIpep);
                             udpConnect.Client.ReceiveTimeout = 100;
                             byte[] sendbytes = { 0x63, 00, 00, 00, 00, 00, 00,
-                                00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
-                                00, 00, 00, 00, 00 };
-
-                            IPEndPoint remoteIpep = new IPEndPoint(IPAddress.Parse("255.255.255.255"), 44818); // 发送到的IP地址和端口号
+                            00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
+                            00, 00, 00, 00, 00 };
+                            //发送
+                            IPEndPoint remoteIpep = new IPEndPoint(IPAddress.Parse(ipString[i]), 44818); // 发送到的IP地址和端口号
                             udpConnect.Send(sendbytes, sendbytes.Length, remoteIpep);
 
-                            // 接收回传报文
                             try
                             {
-                                while (true)
-                                {
-                                    // udpRecv接收数组，单次接收
-                                    // 读取缓冲区数据
-                                    udpRecv = udpConnect.Receive(ref localIpep);
-                                    IPAddress ip = localIpep.Address;
-
-                                    // 数组解包
-                                    packageUnwarp(ref device[index], udpRecv, ip);
-
-
-                                    // 当index大于最大设备数组，重置index
-                                    if (index >= MaxDevicesNumber) index = 0;
-
-                                    // 将设备添加到listbox中
-                                    this.ListBoxDevices.Items.Add(device[index].ips + "-" + device[index].DeviceName);
-                                    index++;
-                                }
+                                // 接收udp，捕捉接收超时Exception
+                                udpRecv = udpConnect.Receive(ref localIpep);
                             }
                             catch (Exception ex)
                             {
-                                Console.WriteLine(ex);
+                                continue;
                             }
-                            finally
-                            {
-                                // 显示共捕捉输出设备数
-                                this.LabelDevicesNumber.Text = index.ToString();
-                                this.LabelStatusText.Text = "接收成功！已接受数目：" + index.ToString();
-                                needToFlush = false;
-                                // 关闭udp连接
-                                udpConnect.Close();
-                            }
-                            break;
-                        }
-                    default: break;
-                }
 
+                            IPAddress ip = localIpep.Address;
+
+                            // 对接受进行解码
+                            packageUnwarp(ref device[index], udpRecv, ip);
+
+                            if (index >= 1000) index = 0;
+
+                            string name = getHostNameFun(BIA.Value.ToString());
+
+                            addItemTree(name,device[index]);
+
+                            udpConnect.Close();
+                        }
+
+                        this.LabelStatusText.Text = "接收成功！已接受数目：" + index.ToString();
+                        this.LabelDevicesNumber.Text = index.ToString();
+
+
+                        break;
+                    }
+                case 2:
+                    {
+                        //子网掩码、IP及广播地址的计算
+                        String mask = RSM.Value.ToString();
+                        String remoteIp = RIA.Value.ToString();
+                        String boardcastIP = GetBroadcast(remoteIp, mask);
+                        // 计时器线程
+                        clock = new Thread(clockCount);
+                        clock.Start();
+
+                        // 清空设备列表
+                        this.treeView1.Nodes.Clear();
+
+                        // 状态变更
+                        this.LabelStatusText.Text = "发送中……";
+
+                        // 本机IP和监听端口号
+                        localIpep = new IPEndPoint(BIA.Value, 44814);
+
+                        // 发送UDP访问报文
+                        udpConnect = new UdpClient(localIpep);
+                        udpConnect.Client.ReceiveTimeout = 100;
+                        byte[] sendbytes = { 0x63, 00, 00, 00, 00, 00, 00,
+                            00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
+                            00, 00, 00, 00, 00 };
+
+                        IPEndPoint remoteIpep = new IPEndPoint(IPAddress.Parse("255.255.255.255"), 44818); // 发送到的IP地址和端口号
+                        udpConnect.Send(sendbytes, sendbytes.Length, remoteIpep);
+
+                        // 接收回传报文
+                        try
+                        {
+                            while (true)
+                            {
+                                // udpRecv接收数组，单次接收
+                                // 读取缓冲区数据
+                                udpRecv = udpConnect.Receive(ref localIpep);
+                                IPAddress ip = localIpep.Address;
+
+                                // 数组解包
+                                packageUnwarp(ref device[index], udpRecv, ip);
+
+                                // 当index大于最大设备数组，重置index
+                                if (index >= MaxDevicesNumber) index = 0;
+
+                                // 将设备添加到listbox中
+                                string name = RIA.Value.ToString();
+                                addItemTree(name, device[index]);
+                                index++;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex);
+                        }
+                        finally
+                        {
+                            // 显示共捕捉输出设备数
+                            this.LabelDevicesNumber.Text = index.ToString();
+                            this.LabelStatusText.Text = "接收成功！已接受数目：" + index.ToString();
+                            needToFlush = false;
+                            // 关闭udp连接
+                            udpConnect.Close();
+                        }
+                        break;
+                    }
+                default: break;
             }
         }
 
@@ -258,18 +250,12 @@ namespace DeviceExplorer
         // 停止按钮的Event
         private void ButtonStop_Click(object sender, EventArgs e)
         {
-            // 如果已经停止，抛出异常对话框
-            if (IsStart == false)
-            {
-                MessageBox.Show("尚未启动！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            else
-            {
-                // 关闭定时器线程
-                clock.Abort();
-                IsStart = false;
-                this.LabelStatusText.Text = "成功关闭";
-            }
+            ButtonStop.Enabled = false;
+            ButtonStart.Enabled = true;
+            // 关闭定时器线程
+            clock.Abort();
+            IsStart = false;
+            this.LabelStatusText.Text = "成功关闭";
 
         }
 
@@ -279,7 +265,7 @@ namespace DeviceExplorer
         private void ButtonClear_Click(object sender, EventArgs e)
         {
             // 清空listbox内容
-            this.ListBoxDevices.Items.Clear();
+            this.treeView1.Nodes.Clear();
         }
 
         // listbox双击事件
@@ -355,6 +341,35 @@ namespace DeviceExplorer
 
         }
 
+        private void treeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)  //单击鼠标左键才响应
+            {
+                if (e.Node.Level == 1)                               //判断子节点才响应
+                {
+                    // get双击item的index
+                    int index = e.Node.Index;
+                    // get -1 即啥也没点到
+                    if (index == -1)
+                    {
+                        return;
+                    }
+
+                    // 展示device的属性
+                    MessageBox.Show(
+                        "Address:               " + device[index].ips + "\n" +
+                        "Vendor:                " + device[index].Vendor + "\n" +
+                        "Product Type:      " + device[index].ProductType + "\n" +
+                        "Product Code       " + device[index].ProductCode + "\n" +
+                        "Device Name:       " + device[index].DeviceName + "\n" +
+                        "Serial Number:     " + device[index].SerialNumber + "\n"
+
+                        , "Device Properties", MessageBoxButtons.OK, MessageBoxIcon.Information
+                        );
+                }
+
+            }
+        }
         // 方法定义=======================================================
         // 远程子网广播地址计算
         public static string GetBroadcast(string ipAddress, string subnetMask)
@@ -399,6 +414,34 @@ namespace DeviceExplorer
             device.DeviceName = byteToString(vs, 63, vs.Length - 1);
         }
 
+        private void addItemTree(String parent,Device device)
+        {
+            bool find = false;
+            foreach(TreeNode tn in treeView1.Nodes)
+            {
+                if(tn.Text == parent)
+                {
+                    find = true;
+                }
+            }
+            if (!find)
+            {
+                treeView1.Nodes.Add(parent,parent,0);
+            }
+            treeView1.SelectedNode = treeView1.Nodes[0];
+            treeView1.ExpandAll();
+            treeView1.SelectedNode.Nodes.Add(device.ips + "-" + device.DeviceName, device.ips + "-" + device.DeviceName,1,1);
+        }
+
+        private string getHostNameFun(String ip)
+        {
+            // 获取主机名
+            IPHostEntry myscanhost = Dns.GetHostEntry(
+            IPAddress.Parse(ip));
+            string name = myscanhost.HostName.ToString();
+            return name;
+        }
+
         // 线程定义=======================================================
         // 时钟线程
         public void clockCount()
@@ -412,7 +455,46 @@ namespace DeviceExplorer
 
         }
 
+        private void ComboBoxBrowseMode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int item = ComboBoxBrowseMode.SelectedIndex;
+            switch (item)
+            {
+                case 0:
+                    {
+                        ipAddressTextBox1.Enabled = false;
+                        ButtonAdd.Enabled = false;
+                        ButtonRemove.Enabled = false;
+                        RIA.Enabled = false;
+                        RSM.Enabled = false;
+                        break;
+                    }
+                case 1:
+                    {
+                        ipAddressTextBox1.Enabled = true;
+                        ButtonAdd.Enabled = true;
+                        ButtonRemove.Enabled = true;
+                        RIA.Enabled = false;
+                        RSM.Enabled = false;
+                        break;
+                    }
+                case 2:
+                    {
+                        ipAddressTextBox1.Enabled = false;
+                        ButtonAdd.Enabled = false;
+                        ButtonRemove.Enabled = false;
+                        RIA.Enabled = true;
+                        RSM.Enabled = true;
+                        break;
+                    }
+                default: break;
+            }
+        }
 
+        private void DeviceExplorer_Load(object sender, EventArgs e)
+        {
+            ComboBoxBrowseMode.SelectedIndex = 0;
+        }
     }
 }
 

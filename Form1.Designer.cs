@@ -44,6 +44,7 @@ namespace DeviceExplorer
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DeviceExplorer));
             this.LabelBindingIPAddress = new System.Windows.Forms.Label();
             this.LabelRemoteIPAddress = new System.Windows.Forms.Label();
@@ -56,6 +57,8 @@ namespace DeviceExplorer
             this.ButtonAdd = new System.Windows.Forms.Button();
             this.ListBoxPointToPointIPAddress = new System.Windows.Forms.ListBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.treeView1 = new System.Windows.Forms.TreeView();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.LabelDevicesNumber = new System.Windows.Forms.Label();
             this.LabelDevicesFound = new System.Windows.Forms.Label();
             this.ButtonClear = new System.Windows.Forms.Button();
@@ -68,10 +71,10 @@ namespace DeviceExplorer
             this.LabelStatusText = new System.Windows.Forms.Label();
             this.LabelTimeSet = new System.Windows.Forms.Label();
             this.TextBoxTimeSet = new System.Windows.Forms.TextBox();
-            this.RIA = new FVD.Common.IPAddressTextBox();
-            this.BIA = new FVD.Common.IPAddressTextBox();
             this.ButtonTimeSet = new System.Windows.Forms.Button();
             this.RSM = new FVD.Common.IPAddressTextBox();
+            this.RIA = new FVD.Common.IPAddressTextBox();
+            this.BIA = new FVD.Common.IPAddressTextBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -121,12 +124,11 @@ namespace DeviceExplorer
             "本地广播",
             "本地P2P访问",
             "远程"});
-            this.ComboBoxBrowseMode.SelectedIndex = 0;
             this.ComboBoxBrowseMode.Location = new System.Drawing.Point(535, 30);
             this.ComboBoxBrowseMode.Name = "ComboBoxBrowseMode";
             this.ComboBoxBrowseMode.Size = new System.Drawing.Size(157, 23);
             this.ComboBoxBrowseMode.TabIndex = 4;
-            this.ComboBoxBrowseMode.SelectedIndex = 0;
+            this.ComboBoxBrowseMode.SelectedIndexChanged += new System.EventHandler(this.ComboBoxBrowseMode_SelectedIndexChanged);
             // 
             // panel1
             // 
@@ -149,7 +151,7 @@ namespace DeviceExplorer
             this.ipAddressTextBox1.Name = "ipAddressTextBox1";
             this.ipAddressTextBox1.Size = new System.Drawing.Size(167, 35);
             this.ipAddressTextBox1.TabIndex = 13;
-            this.ipAddressTextBox1.Value = ((System.Net.IPAddress)(IPAddress.Parse("127.0.0.2")));
+            this.ipAddressTextBox1.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBox1.Value")));
             // 
             // ButtonRemove
             // 
@@ -183,6 +185,7 @@ namespace DeviceExplorer
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.treeView1);
             this.panel2.Controls.Add(this.LabelDevicesNumber);
             this.panel2.Controls.Add(this.LabelDevicesFound);
             this.panel2.Controls.Add(this.ButtonClear);
@@ -193,6 +196,24 @@ namespace DeviceExplorer
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(697, 426);
             this.panel2.TabIndex = 6;
+            // 
+            // treeView1
+            // 
+            this.treeView1.ImageIndex = 0;
+            this.treeView1.ImageList = this.imageList1;
+            this.treeView1.Location = new System.Drawing.Point(20, 27);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.SelectedImageIndex = 0;
+            this.treeView1.Size = new System.Drawing.Size(563, 349);
+            this.treeView1.TabIndex = 6;
+            this.treeView1.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseDoubleClick);
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "主机");
+            this.imageList1.Images.SetKeyName(1, "设备");
             // 
             // LabelDevicesNumber
             // 
@@ -224,6 +245,7 @@ namespace DeviceExplorer
             // 
             // ButtonStop
             // 
+            this.ButtonStop.Enabled = false;
             this.ButtonStop.Location = new System.Drawing.Point(589, 69);
             this.ButtonStop.Name = "ButtonStop";
             this.ButtonStop.Size = new System.Drawing.Size(75, 34);
@@ -306,26 +328,6 @@ namespace DeviceExplorer
             this.TextBoxTimeSet.TabIndex = 16;
             this.TextBoxTimeSet.Text = "5000";
             // 
-            // RIA
-            // 
-            this.RIA.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.RIA.Location = new System.Drawing.Point(910, 33);
-            this.RIA.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.RIA.Name = "RIA";
-            this.RIA.Size = new System.Drawing.Size(167, 35);
-            this.RIA.TabIndex = 12;
-            this.RIA.Value = ((System.Net.IPAddress)(IPAddress.Parse("127.0.0.2")));
-            // 
-            // BIA
-            // 
-            this.BIA.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.BIA.Location = new System.Drawing.Point(203, 27);
-            this.BIA.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.BIA.Name = "BIA";
-            this.BIA.Size = new System.Drawing.Size(167, 29);
-            this.BIA.TabIndex = 11;
-            this.BIA.Value = ((System.Net.IPAddress)(IPAddress.Parse("127.0.0.1")));
-            // 
             // ButtonTimeSet
             // 
             this.ButtonTimeSet.Location = new System.Drawing.Point(653, 66);
@@ -344,7 +346,27 @@ namespace DeviceExplorer
             this.RSM.Name = "RSM";
             this.RSM.Size = new System.Drawing.Size(167, 28);
             this.RSM.TabIndex = 14;
-            this.RSM.Value = ((System.Net.IPAddress)(IPAddress.Parse("255.255.255.0")));
+            this.RSM.Value = ((System.Net.IPAddress)(resources.GetObject("RSM.Value")));
+            // 
+            // RIA
+            // 
+            this.RIA.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.RIA.Location = new System.Drawing.Point(910, 33);
+            this.RIA.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.RIA.Name = "RIA";
+            this.RIA.Size = new System.Drawing.Size(167, 35);
+            this.RIA.TabIndex = 12;
+            this.RIA.Value = ((System.Net.IPAddress)(resources.GetObject("RIA.Value")));
+            // 
+            // BIA
+            // 
+            this.BIA.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.BIA.Location = new System.Drawing.Point(203, 27);
+            this.BIA.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BIA.Name = "BIA";
+            this.BIA.Size = new System.Drawing.Size(167, 29);
+            this.BIA.TabIndex = 11;
+            this.BIA.Value = ((System.Net.IPAddress)(resources.GetObject("BIA.Value")));
             // 
             // DeviceExplorer
             // 
@@ -372,6 +394,7 @@ namespace DeviceExplorer
             this.MinimizeBox = false;
             this.Name = "DeviceExplorer";
             this.Text = "Device Explorer";
+            this.Load += new System.EventHandler(this.DeviceExplorer_Load);
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
@@ -409,6 +432,8 @@ namespace DeviceExplorer
         private Label LabelTimeSet;
         private TextBox TextBoxTimeSet;
         private Button ButtonTimeSet;
+        private TreeView treeView1;
+        private ImageList imageList1;
     }
 }
 
