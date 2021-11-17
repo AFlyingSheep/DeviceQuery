@@ -51,7 +51,7 @@ namespace DeviceExplorer
                             this.LabelStatusText.Text = "发送中……";
                             localIpep = new IPEndPoint(BIA.Value, 44814); // 本机IP和监听端口号
                             udpcSend = new UdpClient(localIpep);
-                            udpcSend.Client.ReceiveTimeout = 10;
+                            udpcSend.Client.ReceiveTimeout = 100;
                             byte[] sendbytes = { 0x63, 00, 00, 00, 00, 00, 00,
                                 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
                                 00, 00, 00, 00, 00 };
@@ -67,7 +67,8 @@ namespace DeviceExplorer
                                     packageUnwarp(ref device[index], udpRecv, ip);
 
                                     if (index >= 1000) index = 0;
-                                    this.ListBoxDevices.Items.Add(device[index].ips + "/");
+                                    
+                                    this.ListBoxDevices.Items.Add(device[index].ips + "-" + device[index].DeviceName);
                                     index++;
                                 }
                             }
@@ -108,6 +109,7 @@ namespace DeviceExplorer
             resultString += Encoding.ASCII.GetString(result);
             return resultString;
         }
+
         private void packageUnwarp(ref Device device, byte[] vs,IPAddress ip)
         {
             device = new Device();
@@ -121,6 +123,7 @@ namespace DeviceExplorer
                 Convert.ToString(udpRecv[59], 16) +
                 Convert.ToString(udpRecv[58], 16);
             device.DeviceName = byteToString(vs, 63, vs.Length - 1);
+
            // device.ProductType
         }
 

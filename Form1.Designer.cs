@@ -51,6 +51,7 @@ namespace DeviceExplorer
             this.LabelRemoteSubnetMask = new System.Windows.Forms.Label();
             this.ComboBoxBrowseMode = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.ipAddressTextBox1 = new FVD.Common.IPAddressTextBox();
             this.ButtonRemove = new System.Windows.Forms.Button();
             this.ButtonAdd = new System.Windows.Forms.Button();
             this.ListBoxPointToPointIPAddress = new System.Windows.Forms.ListBox();
@@ -67,7 +68,6 @@ namespace DeviceExplorer
             this.LabelStatusText = new System.Windows.Forms.Label();
             this.RIA = new FVD.Common.IPAddressTextBox();
             this.BIA = new FVD.Common.IPAddressTextBox();
-            this.ipAddressTextBox1 = new FVD.Common.IPAddressTextBox();
             this.ipAddressTextBox2 = new FVD.Common.IPAddressTextBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -94,7 +94,7 @@ namespace DeviceExplorer
             // LabelBrowseMode
             // 
             this.LabelBrowseMode.AutoSize = true;
-            this.LabelBrowseMode.Location = new System.Drawing.Point(425, 33);
+            this.LabelBrowseMode.Location = new System.Drawing.Point(426, 33);
             this.LabelBrowseMode.Name = "LabelBrowseMode";
             this.LabelBrowseMode.Size = new System.Drawing.Size(103, 15);
             this.LabelBrowseMode.TabIndex = 2;
@@ -103,7 +103,7 @@ namespace DeviceExplorer
             // LabelRemoteSubnetMask
             // 
             this.LabelRemoteSubnetMask.AutoSize = true;
-            this.LabelRemoteSubnetMask.Location = new System.Drawing.Point(425, 66);
+            this.LabelRemoteSubnetMask.Location = new System.Drawing.Point(719, 33);
             this.LabelRemoteSubnetMask.Name = "LabelRemoteSubnetMask";
             this.LabelRemoteSubnetMask.Size = new System.Drawing.Size(159, 15);
             this.LabelRemoteSubnetMask.TabIndex = 3;
@@ -117,11 +117,13 @@ namespace DeviceExplorer
             "本地广播",
             "本地p2p",
             "远程"});
-            this.ComboBoxBrowseMode.Location = new System.Drawing.Point(602, 33);
+            this.ComboBoxBrowseMode.Location = new System.Drawing.Point(535, 30);
             this.ComboBoxBrowseMode.Name = "ComboBoxBrowseMode";
             this.ComboBoxBrowseMode.Size = new System.Drawing.Size(157, 23);
             this.ComboBoxBrowseMode.TabIndex = 4;
             this.ComboBoxBrowseMode.SelectedIndex = 0;
+
+
             // 
             // panel1
             // 
@@ -135,6 +137,16 @@ namespace DeviceExplorer
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(278, 426);
             this.panel1.TabIndex = 5;
+            // 
+            // ipAddressTextBox1
+            // 
+            this.ipAddressTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ipAddressTextBox1.Location = new System.Drawing.Point(16, 27);
+            this.ipAddressTextBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ipAddressTextBox1.Name = "ipAddressTextBox1";
+            this.ipAddressTextBox1.Size = new System.Drawing.Size(167, 35);
+            this.ipAddressTextBox1.TabIndex = 13;
+            this.ipAddressTextBox1.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBox1.Value")));
             // 
             // ButtonRemove
             // 
@@ -174,7 +186,7 @@ namespace DeviceExplorer
             this.panel2.Controls.Add(this.ListBoxDevices);
             this.panel2.Location = new System.Drawing.Point(429, 121);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(329, 426);
+            this.panel2.Size = new System.Drawing.Size(697, 426);
             this.panel2.TabIndex = 6;
             // 
             // LabelDevicesNumber
@@ -189,7 +201,7 @@ namespace DeviceExplorer
             // LabelDevicesFound
             // 
             this.LabelDevicesFound.AutoSize = true;
-            this.LabelDevicesFound.Location = new System.Drawing.Point(17, 395);
+            this.LabelDevicesFound.Location = new System.Drawing.Point(14, 395);
             this.LabelDevicesFound.Name = "LabelDevicesFound";
             this.LabelDevicesFound.Size = new System.Drawing.Size(119, 15);
             this.LabelDevicesFound.TabIndex = 4;
@@ -197,7 +209,7 @@ namespace DeviceExplorer
             // 
             // ButtonClear
             // 
-            this.ButtonClear.Location = new System.Drawing.Point(231, 109);
+            this.ButtonClear.Location = new System.Drawing.Point(589, 109);
             this.ButtonClear.Name = "ButtonClear";
             this.ButtonClear.Size = new System.Drawing.Size(75, 34);
             this.ButtonClear.TabIndex = 3;
@@ -207,7 +219,7 @@ namespace DeviceExplorer
             // 
             // ButtonStop
             // 
-            this.ButtonStop.Location = new System.Drawing.Point(231, 69);
+            this.ButtonStop.Location = new System.Drawing.Point(589, 69);
             this.ButtonStop.Name = "ButtonStop";
             this.ButtonStop.Size = new System.Drawing.Size(75, 34);
             this.ButtonStop.TabIndex = 2;
@@ -217,7 +229,7 @@ namespace DeviceExplorer
             // 
             // ButtonStart
             // 
-            this.ButtonStart.Location = new System.Drawing.Point(231, 27);
+            this.ButtonStart.Location = new System.Drawing.Point(589, 27);
             this.ButtonStart.Name = "ButtonStart";
             this.ButtonStart.Size = new System.Drawing.Size(75, 35);
             this.ButtonStart.TabIndex = 1;
@@ -231,9 +243,9 @@ namespace DeviceExplorer
             this.ListBoxDevices.ItemHeight = 15;
             this.ListBoxDevices.Location = new System.Drawing.Point(20, 27);
             this.ListBoxDevices.Name = "ListBoxDevices";
-            this.ListBoxDevices.Size = new System.Drawing.Size(187, 349);
+            this.ListBoxDevices.Size = new System.Drawing.Size(563, 349);
             this.ListBoxDevices.TabIndex = 0;
-            this.ListBoxDevices.MouseDoubleClick += new MouseEventHandler(this.listBoxDevices_MouseDoubleClick);
+            this.ListBoxDevices.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxDevices_MouseDoubleClick);
             // 
             // LabelPointToPoint
             // 
@@ -292,31 +304,21 @@ namespace DeviceExplorer
             this.BIA.TabIndex = 11;
             this.BIA.Value = ((System.Net.IPAddress)(resources.GetObject("BIA.Value")));
             // 
-            // ipAddressTextBox1
-            // 
-            this.ipAddressTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ipAddressTextBox1.Location = new System.Drawing.Point(16, 27);
-            this.ipAddressTextBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.ipAddressTextBox1.Name = "ipAddressTextBox1";
-            this.ipAddressTextBox1.Size = new System.Drawing.Size(167, 35);
-            this.ipAddressTextBox1.TabIndex = 13;
-            //this.ipAddressTextBox1.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBox1.Value")));
-            // 
             // ipAddressTextBox2
             // 
             this.ipAddressTextBox2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ipAddressTextBox2.Location = new System.Drawing.Point(591, 66);
+            this.ipAddressTextBox2.Location = new System.Drawing.Point(885, 28);
             this.ipAddressTextBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ipAddressTextBox2.Name = "ipAddressTextBox2";
             this.ipAddressTextBox2.Size = new System.Drawing.Size(167, 28);
             this.ipAddressTextBox2.TabIndex = 14;
-            //this.ipAddressTextBox2.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBox2.Value")));
+            this.ipAddressTextBox2.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBox2.Value")));
             // 
             // DeviceExplorer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 596);
+            this.ClientSize = new System.Drawing.Size(1158, 594);
             this.Controls.Add(this.ipAddressTextBox2);
             this.Controls.Add(this.RIA);
             this.Controls.Add(this.BIA);
