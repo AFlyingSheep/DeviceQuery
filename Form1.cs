@@ -370,24 +370,74 @@ namespace DeviceExplorer
 
             }
         }
-        // 方法定义=======================================================
-        // 远程子网广播地址计算
-        public static string GetBroadcast(string ipAddress, string subnetMask)
+
+        // combobox更改时的定义，主要是对于按钮的enable
+        private void ComboBoxBrowseMode_SelectedIndexChanged(object sender, EventArgs e)
         {
-
-            byte[] ip = IPAddress.Parse(ipAddress).GetAddressBytes();
-            byte[] sub = IPAddress.Parse(subnetMask).GetAddressBytes();
-
-            // 广播地址=子网按位求反 再 或IP地址
-            for (int i = 0; i < ip.Length; i++)
+            int item = ComboBoxBrowseMode.SelectedIndex;
+            switch (item)
             {
-                ip[i] = (byte)((~sub[i]) | ip[i]);
+                // 本地
+                case 0:
+                    {
+                        ipAddressTextBox1.Enabled = false;
+                        ButtonAdd.Enabled = false;
+                        ButtonRemove.Enabled = false;
+                        RIA.Enabled = false;
+                        RSM.Enabled = false;
+                        break;
+                    }
+
+                // p2p
+                case 1:
+                    {
+                        ipAddressTextBox1.Enabled = true;
+                        ButtonAdd.Enabled = true;
+                        ButtonRemove.Enabled = true;
+                        RIA.Enabled = false;
+                        RSM.Enabled = false;
+                        break;
+                    }
+
+                // 远程子网
+                case 2:
+                    {
+                        ipAddressTextBox1.Enabled = false;
+                        ButtonAdd.Enabled = false;
+                        ButtonRemove.Enabled = false;
+                        RIA.Enabled = true;
+                        RSM.Enabled = true;
+                        break;
+                    }
+                default: break;
             }
-            return new IPAddress(ip).ToString();
+        }
+
+        // 在form加载时为combobox赋默认值
+        private void DeviceExplorer_Load(object sender, EventArgs e)
+        {
+            ComboBoxBrowseMode.SelectedIndex = 0;
         }
 
 
-        // byte 2 字符串
+        // 方法定义=======================================================
+        // 远程子网广播地址计算
+        public static string GetBroadcast(string ipAddress, string subnetMask)
+            {
+
+                byte[] ip = IPAddress.Parse(ipAddress).GetAddressBytes();
+                byte[] sub = IPAddress.Parse(subnetMask).GetAddressBytes();
+
+                // 广播地址=子网按位求反 再 或IP地址
+                for (int i = 0; i < ip.Length; i++)
+                {
+                    ip[i] = (byte)((~sub[i]) | ip[i]);
+                }
+                return new IPAddress(ip).ToString();
+            }
+
+
+            // byte 2 字符串
         private String byteToString(byte[] vs, int begin, int end)
         {
             String resultString = null;
@@ -414,8 +464,10 @@ namespace DeviceExplorer
             device.DeviceName = byteToString(vs, 63, vs.Length - 1);
         }
 
+        // treeView加入节点，父节点parent，子节点device
         private void addItemTree(String parent,Device device)
         {
+            // 查看父节点是否存在 不存在则插入父节点
             bool find = false;
             foreach(TreeNode tn in treeView1.Nodes)
             {
@@ -428,11 +480,16 @@ namespace DeviceExplorer
             {
                 treeView1.Nodes.Add(parent,parent,0);
             }
+
+           
             treeView1.SelectedNode = treeView1.Nodes[0];
+            // 父节点展开
             treeView1.ExpandAll();
+            // 子节点插入
             treeView1.SelectedNode.Nodes.Add(device.ips + "-" + device.DeviceName, device.ips + "-" + device.DeviceName,1,1);
         }
 
+        // 通过ip地址获得主机名称
         private string getHostNameFun(String ip)
         {
             // 获取主机名
@@ -452,68 +509,26 @@ namespace DeviceExplorer
                 Thread.Sleep(ClockCountTime);
                 index = 0;
             }
-
-        }
-
-        private void ComboBoxBrowseMode_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int item = ComboBoxBrowseMode.SelectedIndex;
-            switch (item)
-            {
-                case 0:
-                    {
-                        ipAddressTextBox1.Enabled = false;
-                        ButtonAdd.Enabled = false;
-                        ButtonRemove.Enabled = false;
-                        RIA.Enabled = false;
-                        RSM.Enabled = false;
-                        break;
-                    }
-                case 1:
-                    {
-                        ipAddressTextBox1.Enabled = true;
-                        ButtonAdd.Enabled = true;
-                        ButtonRemove.Enabled = true;
-                        RIA.Enabled = false;
-                        RSM.Enabled = false;
-                        break;
-                    }
-                case 2:
-                    {
-                        ipAddressTextBox1.Enabled = false;
-                        ButtonAdd.Enabled = false;
-                        ButtonRemove.Enabled = false;
-                        RIA.Enabled = true;
-                        RSM.Enabled = true;
-                        break;
-                    }
-                default: break;
-            }
-        }
-
-        private void DeviceExplorer_Load(object sender, EventArgs e)
-        {
-            ComboBoxBrowseMode.SelectedIndex = 0;
         }
     }
-}
 
-// 设备类
-class Device
-{
-    public String ips;
-    public int Vendor;
-    public int ProductType;
-    public int ProductCode;
-    public String DeviceName;
-    public String SerialNumber;
-    public Device()
+    // 设备类
+    class Device
     {
-        ips = null;
-        Vendor = 0;
-        ProductType = 0;
-        ProductCode = 0;
-        DeviceName = null;
-        SerialNumber = null;
+        public String ips;
+        public int Vendor;
+        public int ProductType;
+        public int ProductCode;
+        public String DeviceName;
+        public String SerialNumber;
+        public Device()
+        {
+            ips = null;
+            Vendor = 0;
+            ProductType = 0;
+            ProductCode = 0;
+            DeviceName = null;
+            SerialNumber = null;
+        }
     }
 }
