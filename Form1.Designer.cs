@@ -51,7 +51,6 @@ namespace DeviceExplorer
             this.LabelRemoteSubnetMask = new System.Windows.Forms.Label();
             this.ComboBoxBrowseMode = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.ipAddressTextBox1 = new FVD.Common.IPAddressTextBox();
             this.ButtonRemove = new System.Windows.Forms.Button();
             this.ButtonAdd = new System.Windows.Forms.Button();
             this.ListBoxPointToPointIPAddress = new System.Windows.Forms.ListBox();
@@ -66,9 +65,13 @@ namespace DeviceExplorer
             this.LabelBrowse = new System.Windows.Forms.Label();
             this.LabelStatus = new System.Windows.Forms.Label();
             this.LabelStatusText = new System.Windows.Forms.Label();
+            this.LabelTimeSet = new System.Windows.Forms.Label();
+            this.TextBoxTimeSet = new System.Windows.Forms.TextBox();
+            this.ipAddressTextBox2 = new FVD.Common.IPAddressTextBox();
             this.RIA = new FVD.Common.IPAddressTextBox();
             this.BIA = new FVD.Common.IPAddressTextBox();
-            this.ipAddressTextBox2 = new FVD.Common.IPAddressTextBox();
+            this.ipAddressTextBox1 = new FVD.Common.IPAddressTextBox();
+            this.ButtonTimeSet = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -121,9 +124,6 @@ namespace DeviceExplorer
             this.ComboBoxBrowseMode.Name = "ComboBoxBrowseMode";
             this.ComboBoxBrowseMode.Size = new System.Drawing.Size(157, 23);
             this.ComboBoxBrowseMode.TabIndex = 4;
-            this.ComboBoxBrowseMode.SelectedIndex = 0;
-
-
             // 
             // panel1
             // 
@@ -137,16 +137,6 @@ namespace DeviceExplorer
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(278, 426);
             this.panel1.TabIndex = 5;
-            // 
-            // ipAddressTextBox1
-            // 
-            this.ipAddressTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ipAddressTextBox1.Location = new System.Drawing.Point(16, 27);
-            this.ipAddressTextBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.ipAddressTextBox1.Name = "ipAddressTextBox1";
-            this.ipAddressTextBox1.Size = new System.Drawing.Size(167, 35);
-            this.ipAddressTextBox1.TabIndex = 13;
-            this.ipAddressTextBox1.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBox1.Value")));
             // 
             // ButtonRemove
             // 
@@ -284,6 +274,32 @@ namespace DeviceExplorer
             this.LabelStatusText.TabIndex = 10;
             this.LabelStatusText.Text = "Browse is not started.";
             // 
+            // LabelTimeSet
+            // 
+            this.LabelTimeSet.AutoSize = true;
+            this.LabelTimeSet.Location = new System.Drawing.Point(426, 66);
+            this.LabelTimeSet.Name = "LabelTimeSet";
+            this.LabelTimeSet.Size = new System.Drawing.Size(103, 15);
+            this.LabelTimeSet.TabIndex = 15;
+            this.LabelTimeSet.Text = "TimeSet(ms):";
+            // 
+            // TextBoxTimeSet
+            // 
+            this.TextBoxTimeSet.Location = new System.Drawing.Point(535, 63);
+            this.TextBoxTimeSet.Name = "TextBoxTimeSet";
+            this.TextBoxTimeSet.Size = new System.Drawing.Size(100, 25);
+            this.TextBoxTimeSet.TabIndex = 16;
+            // 
+            // ipAddressTextBox2
+            // 
+            this.ipAddressTextBox2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ipAddressTextBox2.Location = new System.Drawing.Point(885, 28);
+            this.ipAddressTextBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ipAddressTextBox2.Name = "ipAddressTextBox2";
+            this.ipAddressTextBox2.Size = new System.Drawing.Size(167, 28);
+            this.ipAddressTextBox2.TabIndex = 14;
+            this.ipAddressTextBox2.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBox2.Value")));
+            // 
             // RIA
             // 
             this.RIA.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -304,21 +320,33 @@ namespace DeviceExplorer
             this.BIA.TabIndex = 11;
             this.BIA.Value = ((System.Net.IPAddress)(resources.GetObject("BIA.Value")));
             // 
-            // ipAddressTextBox2
+            // ipAddressTextBox1
             // 
-            this.ipAddressTextBox2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ipAddressTextBox2.Location = new System.Drawing.Point(885, 28);
-            this.ipAddressTextBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.ipAddressTextBox2.Name = "ipAddressTextBox2";
-            this.ipAddressTextBox2.Size = new System.Drawing.Size(167, 28);
-            this.ipAddressTextBox2.TabIndex = 14;
-            this.ipAddressTextBox2.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBox2.Value")));
+            this.ipAddressTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ipAddressTextBox1.Location = new System.Drawing.Point(16, 27);
+            this.ipAddressTextBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ipAddressTextBox1.Name = "ipAddressTextBox1";
+            this.ipAddressTextBox1.Size = new System.Drawing.Size(167, 35);
+            this.ipAddressTextBox1.TabIndex = 13;
+            this.ipAddressTextBox1.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBox1.Value")));
+            // 
+            // ButtonTimeSet
+            // 
+            this.ButtonTimeSet.Location = new System.Drawing.Point(653, 66);
+            this.ButtonTimeSet.Name = "ButtonTimeSet";
+            this.ButtonTimeSet.Size = new System.Drawing.Size(75, 23);
+            this.ButtonTimeSet.TabIndex = 17;
+            this.ButtonTimeSet.Text = "SetTime";
+            this.ButtonTimeSet.UseVisualStyleBackColor = true;
             // 
             // DeviceExplorer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1158, 594);
+            this.Controls.Add(this.ButtonTimeSet);
+            this.Controls.Add(this.TextBoxTimeSet);
+            this.Controls.Add(this.LabelTimeSet);
             this.Controls.Add(this.ipAddressTextBox2);
             this.Controls.Add(this.RIA);
             this.Controls.Add(this.BIA);
@@ -371,6 +399,9 @@ namespace DeviceExplorer
         private FVD.Common.IPAddressTextBox RIA;
         private FVD.Common.IPAddressTextBox ipAddressTextBox1;
         private FVD.Common.IPAddressTextBox ipAddressTextBox2;
+        private Label LabelTimeSet;
+        private TextBox TextBoxTimeSet;
+        private Button ButtonTimeSet;
     }
 }
 

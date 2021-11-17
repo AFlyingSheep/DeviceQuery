@@ -18,8 +18,11 @@ namespace DeviceExplorer
         private static UdpClient udpcSend = null;
         static byte[] udpRecv = new byte[1024000];
 
+        public const int MaxDevicesNumber = 3000;   // public yyds 最大设备数
+        public static int ClockCountTime = 5000;    // 计时器间隔
+
         static bool IsStart = false;
-        Device[] device = new Device[1000];
+        Device[] device = new Device[MaxDevicesNumber];
         static int index = 0;
 
         static Thread clock;
@@ -42,21 +45,35 @@ namespace DeviceExplorer
                 int item = ComboBoxBrowseMode.SelectedIndex;
                 switch (item)
                 {
+                    // 本地广播
                     case 0:
                         {
                             needToFlush = true;
+
+                            // 计时器线程
                             clock = new Thread(clockCount);
                             clock.Start();
+
+                            // 清空设备列表
                             this.ListBoxDevices.Items.Clear();
+
+                            // 状态变更
                             this.LabelStatusText.Text = "发送中……";
-                            localIpep = new IPEndPoint(BIA.Value, 44814); // 本机IP和监听端口号
+
+                            // 本机IP和监听端口号
+                            localIpep = new IPEndPoint(BIA.Value, 44814); 
+
+                            // 发送UDP访问报文
                             udpcSend = new UdpClient(localIpep);
                             udpcSend.Client.ReceiveTimeout = 100;
                             byte[] sendbytes = { 0x63, 00, 00, 00, 00, 00, 00,
                                 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
                                 00, 00, 00, 00, 00 };
+
                             IPEndPoint remoteIpep = new IPEndPoint(IPAddress.Parse("255.255.255.255"), 44818); // 发送到的IP地址和端口号
                             udpcSend.Send(sendbytes, sendbytes.Length, remoteIpep);
+
+                            // 接收回传报文
                             try
                             {
                                 while (true)
@@ -66,7 +83,8 @@ namespace DeviceExplorer
 
                                     packageUnwarp(ref device[index], udpRecv, ip);
 
-                                    if (index >= 1000) index = 0;
+                                    // 重置？把前面的挤掉？
+                                    if (index >= MaxDevicesNumber) index = 0;
                                     
                                     this.ListBoxDevices.Items.Add(device[index].ips + "-" + device[index].DeviceName);
                                     index++;
@@ -97,9 +115,6 @@ namespace DeviceExplorer
                 }
 
             }
-
-
-
         }
 
         private String byteToString(byte [] vs, int begin , int end)
@@ -147,14 +162,14 @@ namespace DeviceExplorer
             IPAddress ip = localIpep.Address;
             device[index] = new Device();
             device[index++].ips = ip.ToString();
-            if (index >= 1000) index = 0;
+            if (index >= MaxDevicesNumber) index = 0;
 
 
         }
 
         public void clockCount()
         {
-            Thread.Sleep(5000);
+            Thread.Sleep(ClockCountTime);
             index = 0;
         }
         private void ButtonClear_Click(object sender, EventArgs e)
