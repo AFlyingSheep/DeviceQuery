@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -61,14 +63,9 @@ namespace DeviceExplorer
                                 {
                                     udpRecv = udpcSend.Receive(ref localIpep);
                                     IPAddress ip = localIpep.Address;
-                                    device[index] = new Device();
-                                    device[index].ips = ip.ToString();
-                                    device[index].Vendor = udpRecv[48] + udpRecv[49] * 16;
-                                    device[index].SerialNumber = "0x" +
-                                        Convert.ToString(udpRecv[61], 16) +
-                                        Convert.ToString(udpRecv[60], 16) +
-                                        Convert.ToString(udpRecv[59], 16) +
-                                        Convert.ToString(udpRecv[58], 16);
+
+                                    packageUnwarp(ref device[index], udpRecv, ip);
+
                                     if (index >= 1000) index = 0;
                                     this.ListBoxDevices.Items.Add(device[index].ips + "/");
                                     index++;
@@ -102,6 +99,29 @@ namespace DeviceExplorer
 
 
 
+        }
+
+        private String byteToString(byte [] vs, int begin , int end)
+        {
+            String resultString = null;
+            byte[] result = vs.Skip(begin).Take(end-begin).ToArray();
+            resultString += Encoding.ASCII.GetString(result);
+            return resultString;
+        }
+        private void packageUnwarp(ref Device device, byte[] vs,IPAddress ip)
+        {
+            device = new Device();
+            device.ips = ip.ToString();
+            device.Vendor = udpRecv[48] + udpRecv[49] * 16;
+            device.ProductType = udpRecv[50] + udpRecv[51] * 16;
+            device.ProductCode = udpRecv[52] + udpRecv[53] * 16;
+            device.SerialNumber = "0x" +
+                Convert.ToString(udpRecv[61], 16) +
+                Convert.ToString(udpRecv[60], 16) +
+                Convert.ToString(udpRecv[59], 16) +
+                Convert.ToString(udpRecv[58], 16);
+            device.DeviceName = byteToString(vs, 63, vs.Length - 1);
+           // device.ProductType
         }
 
         private void ButtonStop_Click(object sender, EventArgs e)
@@ -149,9 +169,12 @@ namespace DeviceExplorer
                 "Address:               " + device[index].ips + "\n" +
                 "Vendor:                " + device[index].Vendor + "\n" +
                 "Product Type:      " + device[index].ProductType + "\n" +
-                "Serial Number:    " + device[index].SerialNumber + "\n"
+                "Product Code       " + device[index].ProductCode + "\n" +
+                "Device Name:       " + device[index].DeviceName+ "\n" +
+                "Serial Number:     " + device[index].SerialNumber + "\n"
+
                 , "Device Properties", MessageBoxButtons.OK, MessageBoxIcon.Information
-                );
+                ) ;
         }
     }
 }
