@@ -19,7 +19,7 @@ namespace DeviceExplorer
         static byte[] udpRecv = new byte[1024000];
 
         public const int MaxDevicesNumber = 3000;   // public yyds 最大设备数
-        public static int ClockCountTime = 5000;    // 计时器间隔
+        public int ClockCountTime = 5000;    // 计时器间隔
 
         static bool IsStart = false;
         Device[] device = new Device[MaxDevicesNumber];
@@ -125,6 +125,7 @@ namespace DeviceExplorer
             return resultString;
         }
 
+        // UDP解包
         private void packageUnwarp(ref Device device, byte[] vs,IPAddress ip)
         {
             device = new Device();

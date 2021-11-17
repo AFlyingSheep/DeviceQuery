@@ -51,6 +51,7 @@ namespace DeviceExplorer
             this.LabelRemoteSubnetMask = new System.Windows.Forms.Label();
             this.ComboBoxBrowseMode = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.ipAddressTextBox1 = new FVD.Common.IPAddressTextBox();
             this.ButtonRemove = new System.Windows.Forms.Button();
             this.ButtonAdd = new System.Windows.Forms.Button();
             this.ListBoxPointToPointIPAddress = new System.Windows.Forms.ListBox();
@@ -70,7 +71,6 @@ namespace DeviceExplorer
             this.ipAddressTextBox2 = new FVD.Common.IPAddressTextBox();
             this.RIA = new FVD.Common.IPAddressTextBox();
             this.BIA = new FVD.Common.IPAddressTextBox();
-            this.ipAddressTextBox1 = new FVD.Common.IPAddressTextBox();
             this.ButtonTimeSet = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -114,12 +114,15 @@ namespace DeviceExplorer
             // 
             // ComboBoxBrowseMode
             // 
+            this.ComboBoxBrowseMode.Cursor = System.Windows.Forms.Cursors.Default;
             this.ComboBoxBrowseMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ComboBoxBrowseMode.FormattingEnabled = true;
             this.ComboBoxBrowseMode.Items.AddRange(new object[] {
             "本地广播",
-            "本地p2p",
+            "本地P2P访问",
             "远程"});
+            // 默认选择本地广播
+            this.ComboBoxBrowseMode.SelectedIndex = 0;
             this.ComboBoxBrowseMode.Location = new System.Drawing.Point(535, 30);
             this.ComboBoxBrowseMode.Name = "ComboBoxBrowseMode";
             this.ComboBoxBrowseMode.Size = new System.Drawing.Size(157, 23);
@@ -137,6 +140,16 @@ namespace DeviceExplorer
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(278, 426);
             this.panel1.TabIndex = 5;
+            // 
+            // ipAddressTextBox1
+            // 
+            this.ipAddressTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ipAddressTextBox1.Location = new System.Drawing.Point(16, 27);
+            this.ipAddressTextBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ipAddressTextBox1.Name = "ipAddressTextBox1";
+            this.ipAddressTextBox1.Size = new System.Drawing.Size(167, 35);
+            this.ipAddressTextBox1.TabIndex = 13;
+            this.ipAddressTextBox1.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBox1.Value")));
             // 
             // ButtonRemove
             // 
@@ -319,16 +332,6 @@ namespace DeviceExplorer
             this.BIA.Size = new System.Drawing.Size(167, 29);
             this.BIA.TabIndex = 11;
             this.BIA.Value = ((System.Net.IPAddress)(resources.GetObject("BIA.Value")));
-            // 
-            // ipAddressTextBox1
-            // 
-            this.ipAddressTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ipAddressTextBox1.Location = new System.Drawing.Point(16, 27);
-            this.ipAddressTextBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.ipAddressTextBox1.Name = "ipAddressTextBox1";
-            this.ipAddressTextBox1.Size = new System.Drawing.Size(167, 35);
-            this.ipAddressTextBox1.TabIndex = 13;
-            this.ipAddressTextBox1.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBox1.Value")));
             // 
             // ButtonTimeSet
             // 
