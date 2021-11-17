@@ -34,6 +34,7 @@ namespace DeviceExplorer
 
         private void ButtonStart_Click(object sender, EventArgs e)
         {
+            // 如已经开启，抛出警报
             if (IsStart == true)
             {
                 MessageBox.Show("请先结束！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -42,6 +43,7 @@ namespace DeviceExplorer
             {
                 IsStart = true;
                 index = 0;
+                //模式选择 0 1 2 3
                 int item = ComboBoxBrowseMode.SelectedIndex;
                 switch (item)
                 {
@@ -78,15 +80,19 @@ namespace DeviceExplorer
                             {
                                 while (true)
                                 {
+                                    // udpRecv接收数组，单次接收
+                                    // 读取缓冲区数据
                                     udpRecv = udpcSend.Receive(ref localIpep);
                                     IPAddress ip = localIpep.Address;
 
+                                    // 数组解包
                                     packageUnwarp(ref device[index], udpRecv, ip);
 
 
-                                    // 重置？把前面的挤掉？
+                                    // 当index大于最大设备数组，重置index
                                     if (index >= MaxDevicesNumber) index = 0;
 
+                                    // 将设备添加到listbox中
                                     this.ListBoxDevices.Items.Add(device[index].ips + "-" + device[index].DeviceName);
                                     index++;
                                 }
@@ -97,41 +103,52 @@ namespace DeviceExplorer
                             }
                             finally
                             {
+                                // 显示共捕捉输出设备数
                                 this.LabelDevicesNumber.Text = index.ToString();
                                 this.LabelStatusText.Text = "接收成功！已接受数目：" + index.ToString();
                                 needToFlush = false;
+                                // 关闭udp连接
                                 udpcSend.Close();
                             }
                             break;
                         }
                     case 1:
                         {
+                            // 统计同游多少条需要发送的ip并转化为数组
                             int sumIp = ListBoxPointToPointIPAddress.Items.Count;
                             String[] ipString = new string[sumIp];
 
+                            // 开启定时器
                             clock = new Thread(clockCount);
                             clock.Start();
 
+                            // 将ip转化为string存入字符串数组
                             for (int i = 0; i < sumIp; i++)
                             {
                                 ipString[i] = ListBoxPointToPointIPAddress.Items[i].ToString();
                             }
 
+                            // 更改状态
                             this.ListBoxDevices.Items.Clear();
                             this.LabelStatusText.Text = "发送中……";
+
+                            // 向每个目标发送udp
                             for (int i = 0; i < sumIp; i++)
                             {
+                                // 配置发送Udp
                                 localIpep = new IPEndPoint(BIA.Value, 44814); // 本机IP和监听端口号
                                 udpcSend = new UdpClient(localIpep);
                                 udpcSend.Client.ReceiveTimeout = 100;
                                 byte[] sendbytes = { 0x63, 00, 00, 00, 00, 00, 00,
                                 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
                                 00, 00, 00, 00, 00 };
+                                //发送
                                 IPEndPoint remoteIpep = new IPEndPoint(IPAddress.Parse(ipString[i]), 44818); // 发送到的IP地址和端口号
                                 udpcSend.Send(sendbytes, sendbytes.Length, remoteIpep);
 
                                 try
                                 {
+                                    // 接收udp，捕捉接收超时Exception
                                     udpRecv = udpcSend.Receive(ref localIpep);
                                 }
                                 catch (Exception ex)
@@ -141,10 +158,12 @@ namespace DeviceExplorer
 
                                 IPAddress ip = localIpep.Address;
 
+                                // 对接受进行解码
                                 packageUnwarp(ref device[index], udpRecv, ip);
 
                                 if (index >= 1000) index = 0;
 
+                                // 添加入listbox
                                 this.ListBoxDevices.Items.Add(device[index].ips + "-" + device[index].DeviceName);
                                 index++;
                                 this.LabelDevicesNumber.Text = index.ToString();
@@ -161,7 +180,25 @@ namespace DeviceExplorer
                         }
                     case 2:
                         {
-                            String[] mask = RSM.ToString().Split(',');
+                            String[] mask = RSM.Value.ToString().Split('.');
+                            String ip1 = Convert.ToString(Convert.ToInt32(mask[0]), 2);
+                            String ip2 = Convert.ToString(Convert.ToInt32(mask[1]), 2);
+                            String ip3 = Convert.ToString(Convert.ToInt32(mask[2]), 2);
+                            String ip4 = Convert.ToString(Convert.ToInt32(mask[3]), 2);
+                            int countNum = 0;
+                            bool isFind = false;
+
+                            foreach(char i in ip1+ip2+ip3+ip4)
+                            {
+                                if (i == '0')
+                                {
+                                    isFind = true;
+                                    break;
+                                }    
+                                countNum++;
+                            }
+
+
 
                             break;
                         }
@@ -290,6 +327,8 @@ namespace DeviceExplorer
 
 
         }
+
+
     }
 }
 

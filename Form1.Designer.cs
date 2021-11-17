@@ -68,10 +68,10 @@ namespace DeviceExplorer
             this.LabelStatusText = new System.Windows.Forms.Label();
             this.LabelTimeSet = new System.Windows.Forms.Label();
             this.TextBoxTimeSet = new System.Windows.Forms.TextBox();
-            this.RIA = new FVD.Common.IPAddressTextBox();
-            this.BIA = new FVD.Common.IPAddressTextBox();
             this.ButtonTimeSet = new System.Windows.Forms.Button();
             this.RSM = new FVD.Common.IPAddressTextBox();
+            this.RIA = new FVD.Common.IPAddressTextBox();
+            this.BIA = new FVD.Common.IPAddressTextBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -125,7 +125,6 @@ namespace DeviceExplorer
             this.ComboBoxBrowseMode.Name = "ComboBoxBrowseMode";
             this.ComboBoxBrowseMode.Size = new System.Drawing.Size(157, 23);
             this.ComboBoxBrowseMode.TabIndex = 4;
-            this.ComboBoxBrowseMode.SelectedIndex = 0;
             // 
             // panel1
             // 
@@ -304,26 +303,6 @@ namespace DeviceExplorer
             this.TextBoxTimeSet.Size = new System.Drawing.Size(100, 25);
             this.TextBoxTimeSet.TabIndex = 16;
             // 
-            // RIA
-            // 
-            this.RIA.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.RIA.Location = new System.Drawing.Point(910, 33);
-            this.RIA.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.RIA.Name = "RIA";
-            this.RIA.Size = new System.Drawing.Size(167, 35);
-            this.RIA.TabIndex = 12;
-            this.RIA.Value = ((System.Net.IPAddress)(resources.GetObject("RIA.Value")));
-            // 
-            // BIA
-            // 
-            this.BIA.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.BIA.Location = new System.Drawing.Point(203, 27);
-            this.BIA.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.BIA.Name = "BIA";
-            this.BIA.Size = new System.Drawing.Size(167, 29);
-            this.BIA.TabIndex = 11;
-            this.BIA.Value = ((System.Net.IPAddress)(resources.GetObject("BIA.Value")));
-            // 
             // ButtonTimeSet
             // 
             this.ButtonTimeSet.Location = new System.Drawing.Point(653, 66);
@@ -343,6 +322,26 @@ namespace DeviceExplorer
             this.RSM.Size = new System.Drawing.Size(167, 28);
             this.RSM.TabIndex = 14;
             this.RSM.Value = ((System.Net.IPAddress)(resources.GetObject("RSM.Value")));
+            // 
+            // RIA
+            // 
+            this.RIA.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.RIA.Location = new System.Drawing.Point(910, 33);
+            this.RIA.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.RIA.Name = "RIA";
+            this.RIA.Size = new System.Drawing.Size(167, 35);
+            this.RIA.TabIndex = 12;
+            this.RIA.Value = ((System.Net.IPAddress)(resources.GetObject("RIA.Value")));
+            // 
+            // BIA
+            // 
+            this.BIA.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.BIA.Location = new System.Drawing.Point(203, 27);
+            this.BIA.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BIA.Name = "BIA";
+            this.BIA.Size = new System.Drawing.Size(167, 29);
+            this.BIA.TabIndex = 11;
+            this.BIA.Value = ((System.Net.IPAddress)(resources.GetObject("BIA.Value")));
             // 
             // DeviceExplorer
             // 
