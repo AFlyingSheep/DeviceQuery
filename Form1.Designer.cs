@@ -68,10 +68,10 @@ namespace DeviceExplorer
             this.LabelStatusText = new System.Windows.Forms.Label();
             this.LabelTimeSet = new System.Windows.Forms.Label();
             this.TextBoxTimeSet = new System.Windows.Forms.TextBox();
-            this.ButtonTimeSet = new System.Windows.Forms.Button();
-            this.RSM = new FVD.Common.IPAddressTextBox();
             this.RIA = new FVD.Common.IPAddressTextBox();
             this.BIA = new FVD.Common.IPAddressTextBox();
+            this.ButtonTimeSet = new System.Windows.Forms.Button();
+            this.RSM = new FVD.Common.IPAddressTextBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -147,7 +147,7 @@ namespace DeviceExplorer
             this.ipAddressTextBox1.Name = "ipAddressTextBox1";
             this.ipAddressTextBox1.Size = new System.Drawing.Size(167, 35);
             this.ipAddressTextBox1.TabIndex = 13;
-            this.ipAddressTextBox1.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBox1.Value")));
+            this.ipAddressTextBox1.Value = ((System.Net.IPAddress)(IPAddress.Parse("127.0.0.2")));
             // 
             // ButtonRemove
             // 
@@ -302,6 +302,27 @@ namespace DeviceExplorer
             this.TextBoxTimeSet.Name = "TextBoxTimeSet";
             this.TextBoxTimeSet.Size = new System.Drawing.Size(100, 25);
             this.TextBoxTimeSet.TabIndex = 16;
+            this.TextBoxTimeSet.Text = "5000";
+            // 
+            // RIA
+            // 
+            this.RIA.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.RIA.Location = new System.Drawing.Point(910, 33);
+            this.RIA.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.RIA.Name = "RIA";
+            this.RIA.Size = new System.Drawing.Size(167, 35);
+            this.RIA.TabIndex = 12;
+            this.RIA.Value = ((System.Net.IPAddress)(IPAddress.Parse("127.0.0.2")));
+            // 
+            // BIA
+            // 
+            this.BIA.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.BIA.Location = new System.Drawing.Point(203, 27);
+            this.BIA.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BIA.Name = "BIA";
+            this.BIA.Size = new System.Drawing.Size(167, 29);
+            this.BIA.TabIndex = 11;
+            this.BIA.Value = ((System.Net.IPAddress)(IPAddress.Parse("127.0.0.1")));
             // 
             // ButtonTimeSet
             // 
@@ -321,27 +342,7 @@ namespace DeviceExplorer
             this.RSM.Name = "RSM";
             this.RSM.Size = new System.Drawing.Size(167, 28);
             this.RSM.TabIndex = 14;
-            this.RSM.Value = ((System.Net.IPAddress)(resources.GetObject("RSM.Value")));
-            // 
-            // RIA
-            // 
-            this.RIA.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.RIA.Location = new System.Drawing.Point(910, 33);
-            this.RIA.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.RIA.Name = "RIA";
-            this.RIA.Size = new System.Drawing.Size(167, 35);
-            this.RIA.TabIndex = 12;
-            this.RIA.Value = ((System.Net.IPAddress)(resources.GetObject("RIA.Value")));
-            // 
-            // BIA
-            // 
-            this.BIA.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.BIA.Location = new System.Drawing.Point(203, 27);
-            this.BIA.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.BIA.Name = "BIA";
-            this.BIA.Size = new System.Drawing.Size(167, 29);
-            this.BIA.TabIndex = 11;
-            this.BIA.Value = ((System.Net.IPAddress)(resources.GetObject("BIA.Value")));
+            this.RSM.Value = ((System.Net.IPAddress)(IPAddress.Parse("255.255.255.0")));
             // 
             // DeviceExplorer
             // 
