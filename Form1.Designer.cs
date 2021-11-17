@@ -126,7 +126,7 @@ namespace DeviceExplorer
             "远程"});
             this.ComboBoxBrowseMode.Location = new System.Drawing.Point(535, 30);
             this.ComboBoxBrowseMode.Name = "ComboBoxBrowseMode";
-            this.ComboBoxBrowseMode.Size = new System.Drawing.Size(157, 23);
+            this.ComboBoxBrowseMode.Size = new System.Drawing.Size(193, 23);
             this.ComboBoxBrowseMode.TabIndex = 4;
             this.ComboBoxBrowseMode.SelectedIndexChanged += new System.EventHandler(this.ComboBoxBrowseMode_SelectedIndexChanged);
             // 
