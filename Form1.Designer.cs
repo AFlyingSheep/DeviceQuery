@@ -126,6 +126,7 @@ namespace DeviceExplorer
             this.ComboBoxBrowseMode.Name = "ComboBoxBrowseMode";
             this.ComboBoxBrowseMode.Size = new System.Drawing.Size(157, 23);
             this.ComboBoxBrowseMode.TabIndex = 4;
+            this.ComboBoxBrowseMode.SelectedIndex = 0;
             // 
             // panel1
             // 
