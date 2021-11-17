@@ -68,7 +68,7 @@ namespace DeviceExplorer
             this.LabelStatusText = new System.Windows.Forms.Label();
             this.RIA = new FVD.Common.IPAddressTextBox();
             this.BIA = new FVD.Common.IPAddressTextBox();
-            this.RSM = new FVD.Common.IPAddressTextBox();
+            this.ipAddressTextBox2 = new FVD.Common.IPAddressTextBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -85,7 +85,7 @@ namespace DeviceExplorer
             // LabelRemoteIPAddress
             // 
             this.LabelRemoteIPAddress.AutoSize = true;
-            this.LabelRemoteIPAddress.Location = new System.Drawing.Point(743, 40);
+            this.LabelRemoteIPAddress.Location = new System.Drawing.Point(40, 66);
             this.LabelRemoteIPAddress.Name = "LabelRemoteIPAddress";
             this.LabelRemoteIPAddress.Size = new System.Drawing.Size(151, 15);
             this.LabelRemoteIPAddress.TabIndex = 1;
@@ -103,7 +103,7 @@ namespace DeviceExplorer
             // LabelRemoteSubnetMask
             // 
             this.LabelRemoteSubnetMask.AutoSize = true;
-            this.LabelRemoteSubnetMask.Location = new System.Drawing.Point(744, 71);
+            this.LabelRemoteSubnetMask.Location = new System.Drawing.Point(719, 33);
             this.LabelRemoteSubnetMask.Name = "LabelRemoteSubnetMask";
             this.LabelRemoteSubnetMask.Size = new System.Drawing.Size(159, 15);
             this.LabelRemoteSubnetMask.TabIndex = 3;
@@ -122,6 +122,8 @@ namespace DeviceExplorer
             this.ComboBoxBrowseMode.Size = new System.Drawing.Size(157, 23);
             this.ComboBoxBrowseMode.TabIndex = 4;
             this.ComboBoxBrowseMode.SelectedIndex = 0;
+
+
             // 
             // panel1
             // 
@@ -144,7 +146,7 @@ namespace DeviceExplorer
             this.ipAddressTextBox1.Name = "ipAddressTextBox1";
             this.ipAddressTextBox1.Size = new System.Drawing.Size(167, 35);
             this.ipAddressTextBox1.TabIndex = 13;
-            this.ipAddressTextBox1.Value = ((System.Net.IPAddress)(IPAddress.Parse("127.0.0.2")));
+            this.ipAddressTextBox1.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBox1.Value")));
             // 
             // ButtonRemove
             // 
@@ -154,7 +156,6 @@ namespace DeviceExplorer
             this.ButtonRemove.TabIndex = 2;
             this.ButtonRemove.Text = "Remove";
             this.ButtonRemove.UseVisualStyleBackColor = true;
-            this.ButtonRemove.Click += new System.EventHandler(this.ButtonRemove_Click);
             // 
             // ButtonAdd
             // 
@@ -164,7 +165,6 @@ namespace DeviceExplorer
             this.ButtonAdd.TabIndex = 1;
             this.ButtonAdd.Text = "Add";
             this.ButtonAdd.UseVisualStyleBackColor = true;
-            this.ButtonAdd.Click += new System.EventHandler(this.ButtonAdd_Click);
             // 
             // ListBoxPointToPointIPAddress
             // 
@@ -287,12 +287,12 @@ namespace DeviceExplorer
             // RIA
             // 
             this.RIA.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.RIA.Location = new System.Drawing.Point(910, 33);
+            this.RIA.Location = new System.Drawing.Point(203, 59);
             this.RIA.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.RIA.Name = "RIA";
             this.RIA.Size = new System.Drawing.Size(167, 35);
             this.RIA.TabIndex = 12;
-            this.RIA.Value = ((System.Net.IPAddress)(IPAddress.Parse("0.0.0.0")));
+            this.RIA.Value = ((System.Net.IPAddress)(resources.GetObject("RIA.Value")));
             // 
             // BIA
             // 
@@ -302,24 +302,24 @@ namespace DeviceExplorer
             this.BIA.Name = "BIA";
             this.BIA.Size = new System.Drawing.Size(167, 29);
             this.BIA.TabIndex = 11;
-            this.BIA.Value = ((System.Net.IPAddress)(IPAddress.Parse("127.0.0.1")));
+            this.BIA.Value = ((System.Net.IPAddress)(resources.GetObject("BIA.Value")));
             // 
-            // RSM
+            // ipAddressTextBox2
             // 
-            this.RSM.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.RSM.Location = new System.Drawing.Point(910, 66);
-            this.RSM.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.RSM.Name = "RSM";
-            this.RSM.Size = new System.Drawing.Size(167, 28);
-            this.RSM.TabIndex = 14;
-            this.RSM.Value = ((System.Net.IPAddress)(IPAddress.Parse("255.255.255.0")));
+            this.ipAddressTextBox2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ipAddressTextBox2.Location = new System.Drawing.Point(885, 28);
+            this.ipAddressTextBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ipAddressTextBox2.Name = "ipAddressTextBox2";
+            this.ipAddressTextBox2.Size = new System.Drawing.Size(167, 28);
+            this.ipAddressTextBox2.TabIndex = 14;
+            this.ipAddressTextBox2.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBox2.Value")));
             // 
             // DeviceExplorer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1158, 594);
-            this.Controls.Add(this.RSM);
+            this.Controls.Add(this.ipAddressTextBox2);
             this.Controls.Add(this.RIA);
             this.Controls.Add(this.BIA);
             this.Controls.Add(this.LabelStatusText);
@@ -370,7 +370,7 @@ namespace DeviceExplorer
         private FVD.Common.IPAddressTextBox BIA;
         private FVD.Common.IPAddressTextBox RIA;
         private FVD.Common.IPAddressTextBox ipAddressTextBox1;
-        private FVD.Common.IPAddressTextBox RSM;
+        private FVD.Common.IPAddressTextBox ipAddressTextBox2;
     }
 }
 

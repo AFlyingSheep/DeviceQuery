@@ -79,7 +79,7 @@ namespace DeviceExplorer
                             finally
                             {
                                 this.LabelDevicesNumber.Text = index.ToString();
-                                this.LabelStatusText.Text = "接收成功！已接受数目：" + index.ToString();
+                                this.LabelStatusText.Text = "接收成功！";
                                 needToFlush = false;
                                 udpcSend.Close();
                             }
@@ -87,63 +87,10 @@ namespace DeviceExplorer
                         }
                     case 1:
                         {
-                            int sumIp = ListBoxPointToPointIPAddress.Items.Count;
-                            String[] ipString = new string[sumIp];
-
-                            clock = new Thread(clockCount);
-                            clock.Start();
-
-                            for (int i=0;i< sumIp; i++)
-                            {
-                                ipString[i] = ListBoxPointToPointIPAddress.Items[i].ToString();
-                            }
-
-                            this.ListBoxDevices.Items.Clear();
-                            this.LabelStatusText.Text = "发送中……";
-                            for(int i = 0; i < sumIp; i++)
-                            {
-                                localIpep = new IPEndPoint(BIA.Value, 44814); // 本机IP和监听端口号
-                                udpcSend = new UdpClient(localIpep);
-                                udpcSend.Client.ReceiveTimeout = 100;
-                                byte[] sendbytes = { 0x63, 00, 00, 00, 00, 00, 00,
-                                00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
-                                00, 00, 00, 00, 00 };
-                                IPEndPoint remoteIpep = new IPEndPoint(IPAddress.Parse(ipString[i]), 44818); // 发送到的IP地址和端口号
-                                udpcSend.Send(sendbytes, sendbytes.Length, remoteIpep);
-
-                                try
-                                {
-                                    udpRecv = udpcSend.Receive(ref localIpep);
-                                }
-                                catch(Exception ex)
-                                {
-                                    continue;
-                                }
-                                
-                                IPAddress ip = localIpep.Address;
-
-                                packageUnwarp(ref device[index], udpRecv, ip);
-
-                                if (index >= 1000) index = 0;
-
-                                this.ListBoxDevices.Items.Add(device[index].ips + "-" + device[index].DeviceName);
-                                index++;
-                                this.LabelDevicesNumber.Text = index.ToString();
-                                
-                                needToFlush = false;
-                                udpcSend.Close();
-                            }
-
-                            this.LabelStatusText.Text = "接收成功！已接受数目：" + index.ToString();
-
-
-
                             break;
                         }
                     case 2:
                         {
-                            String [] mask = RSM.ToString().Split(',');
-                            
                             break;
                         }
                     default: break;
@@ -231,23 +178,6 @@ namespace DeviceExplorer
 
                 , "Device Properties", MessageBoxButtons.OK, MessageBoxIcon.Information
                 ) ;
-        }
-
-        private void ButtonAdd_Click(object sender, EventArgs e)
-        {
-            IPAddress ip = ipAddressTextBox1.Value;
-            if (ip.ToString() == "127.0.0.1")
-            {
-                MessageBox.Show("禁止回环发送！", "错误！", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            if(!ListBoxPointToPointIPAddress.Items.Contains(ip.ToString()))
-                    this.ListBoxPointToPointIPAddress.Items.Add(ip.ToString());
-        }
-
-        private void ButtonRemove_Click(object sender, EventArgs e)
-        {
-            ListBoxPointToPointIPAddress.Items.Remove(ListBoxPointToPointIPAddress.SelectedItem);
         }
     }
 }
