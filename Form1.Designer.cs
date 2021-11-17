@@ -51,7 +51,7 @@ namespace DeviceExplorer
             this.LabelRemoteSubnetMask = new System.Windows.Forms.Label();
             this.ComboBoxBrowseMode = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.ipAddressTextBox1 = new FVD.Common.IPAddressTextBox();
+            this.ipAddressTextBoxP2PIPAddress = new FVD.Common.IPAddressTextBox();
             this.ButtonRemove = new System.Windows.Forms.Button();
             this.ButtonAdd = new System.Windows.Forms.Button();
             this.ListBoxPointToPointIPAddress = new System.Windows.Forms.ListBox();
@@ -68,10 +68,10 @@ namespace DeviceExplorer
             this.LabelStatusText = new System.Windows.Forms.Label();
             this.LabelTimeSet = new System.Windows.Forms.Label();
             this.TextBoxTimeSet = new System.Windows.Forms.TextBox();
-            this.RIA = new FVD.Common.IPAddressTextBox();
-            this.BIA = new FVD.Common.IPAddressTextBox();
+            this.ipAddressTextBoxRemoteIPAddress = new FVD.Common.IPAddressTextBox();
+            this.ipAddressTextBoxBindingIPAddress = new FVD.Common.IPAddressTextBox();
             this.ButtonTimeSet = new System.Windows.Forms.Button();
-            this.RSM = new FVD.Common.IPAddressTextBox();
+            this.ipAddressTextBoxRemoteSubnetMask = new FVD.Common.IPAddressTextBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -88,7 +88,7 @@ namespace DeviceExplorer
             // LabelRemoteIPAddress
             // 
             this.LabelRemoteIPAddress.AutoSize = true;
-            this.LabelRemoteIPAddress.Location = new System.Drawing.Point(743, 40);
+            this.LabelRemoteIPAddress.Location = new System.Drawing.Point(744, 41);
             this.LabelRemoteIPAddress.Name = "LabelRemoteIPAddress";
             this.LabelRemoteIPAddress.Size = new System.Drawing.Size(151, 15);
             this.LabelRemoteIPAddress.TabIndex = 1;
@@ -126,13 +126,12 @@ namespace DeviceExplorer
             this.ComboBoxBrowseMode.Name = "ComboBoxBrowseMode";
             this.ComboBoxBrowseMode.Size = new System.Drawing.Size(157, 23);
             this.ComboBoxBrowseMode.TabIndex = 4;
-            this.ComboBoxBrowseMode.SelectedIndex = 0;
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.Control;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.ipAddressTextBox1);
+            this.panel1.Controls.Add(this.ipAddressTextBoxP2PIPAddress);
             this.panel1.Controls.Add(this.ButtonRemove);
             this.panel1.Controls.Add(this.ButtonAdd);
             this.panel1.Controls.Add(this.ListBoxPointToPointIPAddress);
@@ -141,15 +140,15 @@ namespace DeviceExplorer
             this.panel1.Size = new System.Drawing.Size(278, 426);
             this.panel1.TabIndex = 5;
             // 
-            // ipAddressTextBox1
+            // ipAddressTextBoxP2PIPAddress
             // 
-            this.ipAddressTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ipAddressTextBox1.Location = new System.Drawing.Point(16, 27);
-            this.ipAddressTextBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.ipAddressTextBox1.Name = "ipAddressTextBox1";
-            this.ipAddressTextBox1.Size = new System.Drawing.Size(167, 35);
-            this.ipAddressTextBox1.TabIndex = 13;
-            this.ipAddressTextBox1.Value = ((System.Net.IPAddress)(IPAddress.Parse("127.0.0.2")));
+            this.ipAddressTextBoxP2PIPAddress.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ipAddressTextBoxP2PIPAddress.Location = new System.Drawing.Point(16, 27);
+            this.ipAddressTextBoxP2PIPAddress.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ipAddressTextBoxP2PIPAddress.Name = "ipAddressTextBoxP2PIPAddress";
+            this.ipAddressTextBoxP2PIPAddress.Size = new System.Drawing.Size(167, 35);
+            this.ipAddressTextBoxP2PIPAddress.TabIndex = 13;
+            this.ipAddressTextBoxP2PIPAddress.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBoxP2PIPAddress.Value")));
             // 
             // ButtonRemove
             // 
@@ -292,7 +291,7 @@ namespace DeviceExplorer
             // LabelTimeSet
             // 
             this.LabelTimeSet.AutoSize = true;
-            this.LabelTimeSet.Location = new System.Drawing.Point(426, 66);
+            this.LabelTimeSet.Location = new System.Drawing.Point(426, 63);
             this.LabelTimeSet.Name = "LabelTimeSet";
             this.LabelTimeSet.Size = new System.Drawing.Size(103, 15);
             this.LabelTimeSet.TabIndex = 15;
@@ -306,25 +305,25 @@ namespace DeviceExplorer
             this.TextBoxTimeSet.TabIndex = 16;
             this.TextBoxTimeSet.Text = "5000";
             // 
-            // RIA
+            // ipAddressTextBoxRemoteIPAddress
             // 
-            this.RIA.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.RIA.Location = new System.Drawing.Point(910, 33);
-            this.RIA.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.RIA.Name = "RIA";
-            this.RIA.Size = new System.Drawing.Size(167, 35);
-            this.RIA.TabIndex = 12;
-            this.RIA.Value = ((System.Net.IPAddress)(IPAddress.Parse("127.0.0.2")));
+            this.ipAddressTextBoxRemoteIPAddress.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ipAddressTextBoxRemoteIPAddress.Location = new System.Drawing.Point(910, 33);
+            this.ipAddressTextBoxRemoteIPAddress.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ipAddressTextBoxRemoteIPAddress.Name = "ipAddressTextBoxRemoteIPAddress";
+            this.ipAddressTextBoxRemoteIPAddress.Size = new System.Drawing.Size(167, 35);
+            this.ipAddressTextBoxRemoteIPAddress.TabIndex = 12;
+            this.ipAddressTextBoxRemoteIPAddress.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBoxRemoteIPAddress.Value")));
             // 
-            // BIA
+            // ipAddressTextBoxBindingIPAddress
             // 
-            this.BIA.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.BIA.Location = new System.Drawing.Point(203, 27);
-            this.BIA.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.BIA.Name = "BIA";
-            this.BIA.Size = new System.Drawing.Size(167, 29);
-            this.BIA.TabIndex = 11;
-            this.BIA.Value = ((System.Net.IPAddress)(IPAddress.Parse("127.0.0.1")));
+            this.ipAddressTextBoxBindingIPAddress.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ipAddressTextBoxBindingIPAddress.Location = new System.Drawing.Point(203, 27);
+            this.ipAddressTextBoxBindingIPAddress.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ipAddressTextBoxBindingIPAddress.Name = "ipAddressTextBoxBindingIPAddress";
+            this.ipAddressTextBoxBindingIPAddress.Size = new System.Drawing.Size(167, 29);
+            this.ipAddressTextBoxBindingIPAddress.TabIndex = 11;
+            this.ipAddressTextBoxBindingIPAddress.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBoxBindingIPAddress.Value")));
             // 
             // ButtonTimeSet
             // 
@@ -336,15 +335,15 @@ namespace DeviceExplorer
             this.ButtonTimeSet.UseVisualStyleBackColor = true;
             this.ButtonTimeSet.Click += new System.EventHandler(this.ButtonTimeSet_Click);
             // 
-            // RSM
+            // ipAddressTextBoxRemoteSubnetMask
             // 
-            this.RSM.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.RSM.Location = new System.Drawing.Point(910, 66);
-            this.RSM.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.RSM.Name = "RSM";
-            this.RSM.Size = new System.Drawing.Size(167, 28);
-            this.RSM.TabIndex = 14;
-            this.RSM.Value = ((System.Net.IPAddress)(IPAddress.Parse("255.255.255.0")));
+            this.ipAddressTextBoxRemoteSubnetMask.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ipAddressTextBoxRemoteSubnetMask.Location = new System.Drawing.Point(910, 66);
+            this.ipAddressTextBoxRemoteSubnetMask.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ipAddressTextBoxRemoteSubnetMask.Name = "ipAddressTextBoxRemoteSubnetMask";
+            this.ipAddressTextBoxRemoteSubnetMask.Size = new System.Drawing.Size(167, 28);
+            this.ipAddressTextBoxRemoteSubnetMask.TabIndex = 14;
+            this.ipAddressTextBoxRemoteSubnetMask.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBoxRemoteSubnetMask.Value")));
             // 
             // DeviceExplorer
             // 
@@ -354,9 +353,9 @@ namespace DeviceExplorer
             this.Controls.Add(this.ButtonTimeSet);
             this.Controls.Add(this.TextBoxTimeSet);
             this.Controls.Add(this.LabelTimeSet);
-            this.Controls.Add(this.RSM);
-            this.Controls.Add(this.RIA);
-            this.Controls.Add(this.BIA);
+            this.Controls.Add(this.ipAddressTextBoxRemoteSubnetMask);
+            this.Controls.Add(this.ipAddressTextBoxRemoteIPAddress);
+            this.Controls.Add(this.ipAddressTextBoxBindingIPAddress);
             this.Controls.Add(this.LabelStatusText);
             this.Controls.Add(this.LabelStatus);
             this.Controls.Add(this.LabelBrowse);
@@ -402,10 +401,10 @@ namespace DeviceExplorer
         private System.Windows.Forms.Label LabelBrowse;
         private System.Windows.Forms.Label LabelStatus;
         private System.Windows.Forms.Label LabelStatusText;
-        private FVD.Common.IPAddressTextBox BIA;
-        private FVD.Common.IPAddressTextBox RIA;
-        private FVD.Common.IPAddressTextBox ipAddressTextBox1;
-        private FVD.Common.IPAddressTextBox RSM;
+        private FVD.Common.IPAddressTextBox ipAddressTextBoxBindingIPAddress;
+        private FVD.Common.IPAddressTextBox ipAddressTextBoxRemoteIPAddress;
+        private FVD.Common.IPAddressTextBox ipAddressTextBoxP2PIPAddress;
+        private FVD.Common.IPAddressTextBox ipAddressTextBoxRemoteSubnetMask;
         private Label LabelTimeSet;
         private TextBox TextBoxTimeSet;
         private Button ButtonTimeSet;

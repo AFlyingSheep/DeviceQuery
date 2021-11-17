@@ -66,7 +66,7 @@ namespace DeviceExplorer
                             this.LabelStatusText.Text = "发送中……";
 
                             // 本机IP和监听端口号
-                            localIpep = new IPEndPoint(BIA.Value, 44814);
+                            localIpep = new IPEndPoint(ipAddressTextBoxBindingIPAddress.Value, 44814);
 
                             // 发送UDP访问报文
                             udpConnect = new UdpClient(localIpep);
@@ -139,7 +139,7 @@ namespace DeviceExplorer
                             for (int i = 0; i < sumIp; i++)
                             {
                                 // 配置发送Udp
-                                localIpep = new IPEndPoint(BIA.Value, 44814); // 本机IP和监听端口号
+                                localIpep = new IPEndPoint(ipAddressTextBoxBindingIPAddress.Value, 44814); // 本机IP和监听端口号
                                 udpConnect = new UdpClient(localIpep);
                                 udpConnect.Client.ReceiveTimeout = 100;
                                 byte[] sendbytes = { 0x63, 00, 00, 00, 00, 00, 00,
@@ -184,8 +184,8 @@ namespace DeviceExplorer
                     case 2:
                         {
                             //子网掩码、IP及广播地址的计算
-                            String mask = RSM.Value.ToString();
-                            String remoteIp = RIA.Value.ToString();
+                            String mask = ipAddressTextBoxRemoteSubnetMask.Value.ToString();
+                            String remoteIp = ipAddressTextBoxRemoteIPAddress.Value.ToString();
                             String boardcastIP = GetBroadcast(remoteIp, mask);
                             // 计时器线程
                             clock = new Thread(clockCount);
@@ -198,7 +198,7 @@ namespace DeviceExplorer
                             this.LabelStatusText.Text = "发送中……";
 
                             // 本机IP和监听端口号
-                            localIpep = new IPEndPoint(BIA.Value, 44814);
+                            localIpep = new IPEndPoint(ipAddressTextBoxBindingIPAddress.Value, 44814);
 
                             // 发送UDP访问报文
                             udpConnect = new UdpClient(localIpep);
@@ -253,7 +253,7 @@ namespace DeviceExplorer
             }
         }
 
-        
+
 
         // 停止按钮的Event
         private void ButtonStop_Click(object sender, EventArgs e)
@@ -309,7 +309,7 @@ namespace DeviceExplorer
         // 给定ip地址的模型-添加按钮单击Event
         private void ButtonAdd_Click(object sender, EventArgs e)
         {
-            IPAddress ip = ipAddressTextBox1.Value;
+            IPAddress ip = ipAddressTextBoxP2PIPAddress.Value;
             if (ip.ToString() == "127.0.0.1")
             {
                 // 去掉回环发送，我也不知道为啥要去掉，其实不去掉没问题
@@ -351,8 +351,6 @@ namespace DeviceExplorer
                 Console.WriteLine(ex);
                 return;
             }
-
-
         }
 
         // 方法定义=======================================================
@@ -414,24 +412,24 @@ namespace DeviceExplorer
 
 
     }
-}
 
-// 设备类
-class Device
-{
-    public String ips;
-    public int Vendor;
-    public int ProductType;
-    public int ProductCode;
-    public String DeviceName;
-    public String SerialNumber;
-    public Device()
+    // 设备类
+    class Device
     {
-        ips = null;
-        Vendor = 0;
-        ProductType = 0;
-        ProductCode = 0;
-        DeviceName = null;
-        SerialNumber = null;
+        public String ips;
+        public int Vendor;
+        public int ProductType;
+        public int ProductCode;
+        public String DeviceName;
+        public String SerialNumber;
+        public Device()
+        {
+            ips = null;
+            Vendor = 0;
+            ProductType = 0;
+            ProductCode = 0;
+            DeviceName = null;
+            SerialNumber = null;
+        }
     }
 }
