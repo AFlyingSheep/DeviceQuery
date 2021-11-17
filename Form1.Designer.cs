@@ -121,6 +121,7 @@ namespace DeviceExplorer
             "本地广播",
             "本地P2P访问",
             "远程"});
+            this.ComboBoxBrowseMode.SelectedIndex = 0;
             this.ComboBoxBrowseMode.Location = new System.Drawing.Point(535, 30);
             this.ComboBoxBrowseMode.Name = "ComboBoxBrowseMode";
             this.ComboBoxBrowseMode.Size = new System.Drawing.Size(157, 23);
