@@ -418,7 +418,7 @@ namespace DeviceExplorer
             }
 
 
-            // byte 2 字符串
+        // byte 2 字符串
         private String byteToString(byte[] vs, int begin, int end)
         {
             String resultString = null;
@@ -467,7 +467,6 @@ namespace DeviceExplorer
             // 父节点展开
             treeView1.ExpandAll();
             // 子节点插入
-            //treeView1.Sort();
             treeView1.SelectedNode.Nodes.Add(device.ips + "-" + device.DeviceName, device.ips + "-" + device.DeviceName,1,1);
         }
 
@@ -537,8 +536,10 @@ namespace DeviceExplorer
         }
     }
 
+    //ip地址排序器
     public class NodeSorter : IComparer
     {
+        // 实现接口的compare方法
         public int Compare(object x,object y)
         {
             TreeNode tx = x as TreeNode;
