@@ -62,66 +62,11 @@ namespace DeviceExplorer
                     {
                         // 状态变更
                         this.LabelStatusText.Text = "发送中……";
+                        case0SendAndRecieve();
+                        // 显示共捕捉输出设备数
+                        this.LabelDevicesNumber.Text = index.ToString();
+                        this.LabelStatusText.Text = "接收成功！已接受数目：" + index.ToString();
 
-                        // 本机IP和监听端口号
-                        localIpep = new IPEndPoint(BIA.Value, 44814);
-
-                        // 发送UDP访问报文
-                        udpConnect = new UdpClient(localIpep);
-                        udpConnect.Client.ReceiveTimeout = 100;
-                        byte[] sendbytes = { 0x63, 00, 00, 00, 00, 00, 00,
-                            00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
-                            00, 00, 00, 00, 00 };
-
-                        IPEndPoint remoteIpep = new IPEndPoint(IPAddress.Parse("255.255.255.255"), 44818); // 发送到的IP地址和端口号
-                        udpConnect.Send(sendbytes, sendbytes.Length, remoteIpep);
-
-                        // 接收回传报文
-                        try
-                        {
-                            while (true)
-                            {
-                                // udpRecv接收数组，单次接收
-                                // 读取缓冲区数据
-                                udpRecv = udpConnect.Receive(ref localIpep);
-                                IPAddress ip = localIpep.Address;
-
-                                // 数组解包
-                                packageUnwarp(ref device[index], udpRecv, ip);
-
-
-                                // 当index大于最大设备数组，重置index
-                                if (index >= MaxDevicesNumber)
-                                {
-                                    MessageBox.Show("超出设备上限！", "警告",
-                                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                    index = 0;
-                                }
-
-                                // 获取主机名
-                                string name = getHostNameFun(BIA.Value.ToString());
-
-                                // 将设备添加到treeview中
-                                addItemTree(name,device[index]);
-                                index++;
-
-                                // 作用：防止界面假死
-                                // 代价：增加加载时间
-                                //Application.DoEvents();
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine(ex);
-                        }
-                        finally
-                        {
-                            // 显示共捕捉输出设备数
-                            this.LabelDevicesNumber.Text = index.ToString();
-                            this.LabelStatusText.Text = "接收成功！已接受数目：" + index.ToString();
-                            // 关闭udp连接
-                            udpConnect.Close();
-                        }
                         break;
                     }
                 case 1:
@@ -143,45 +88,7 @@ namespace DeviceExplorer
                         // 向每个目标发送udp
                         for (int i = 0; i < sumIp; i++)
                         {
-                            // 配置发送Udp
-                            localIpep = new IPEndPoint(BIA.Value, 44814); // 本机IP和监听端口号
-                            udpConnect = new UdpClient(localIpep);
-                            udpConnect.Client.ReceiveTimeout = 100;
-                            byte[] sendbytes = { 0x63, 00, 00, 00, 00, 00, 00,
-                            00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
-                            00, 00, 00, 00, 00 };
-                            //发送
-                            IPEndPoint remoteIpep = new IPEndPoint(IPAddress.Parse(ipString[i]), 44818); // 发送到的IP地址和端口号
-                            udpConnect.Send(sendbytes, sendbytes.Length, remoteIpep);
-
-                            try
-                            {
-                                // 接收udp，捕捉接收超时Exception
-                                udpRecv = udpConnect.Receive(ref localIpep);
-                            }
-                            catch (Exception)
-                            {
-                                continue;
-                            }
-
-                            IPAddress ip = localIpep.Address;
-
-                            // 对接受进行解码
-                            packageUnwarp(ref device[index], udpRecv, ip);
-
-                            string name = getHostNameFun(BIA.Value.ToString());
-
-                            addItemTree(name,device[index]);
-
-                            index++;
-                            if (index >= MaxDevicesNumber)
-                            {
-                                MessageBox.Show("超出设备上限！", "警告",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                index = 0;
-                            }
-
-                            udpConnect.Close();
+                            case1SendAndRecieve(ipString[i]);
                         }
 
                         this.LabelStatusText.Text = "接收成功！已接受数目：" + index.ToString();
@@ -203,57 +110,12 @@ namespace DeviceExplorer
                         // 状态变更
                         this.LabelStatusText.Text = "发送中……";
 
-                        // 本机IP和监听端口号
-                        localIpep = new IPEndPoint(BIA.Value, 44814);
+                        case2SendAndRecieve();
 
-                        // 发送UDP访问报文
-                        udpConnect = new UdpClient(localIpep);
-                        udpConnect.Client.ReceiveTimeout = 100;
-                        byte[] sendbytes = { 0x63, 00, 00, 00, 00, 00, 00,
-                            00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
-                            00, 00, 00, 00, 00 };
+                        // 显示共捕捉输出设备数
+                        this.LabelDevicesNumber.Text = index.ToString();
+                        this.LabelStatusText.Text = "接收成功！已接受数目：" + index.ToString();
 
-                        IPEndPoint remoteIpep = new IPEndPoint(IPAddress.Parse("255.255.255.255"), 44818); // 发送到的IP地址和端口号
-                        udpConnect.Send(sendbytes, sendbytes.Length, remoteIpep);
-
-                        // 接收回传报文
-                        try
-                        {
-                            while (true)
-                            {
-                                // udpRecv接收数组，单次接收
-                                // 读取缓冲区数据
-                                udpRecv = udpConnect.Receive(ref localIpep);
-                                IPAddress ip = localIpep.Address;
-
-                                // 数组解包
-                                packageUnwarp(ref device[index], udpRecv, ip);
-
-                                // 当index大于最大设备数组，重置index
-                                if (index >= MaxDevicesNumber)
-                                {
-                                    MessageBox.Show("超出设备上限！", "警告", 
-                                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                    index = 0;
-                                }
-                                // 将设备添加到treeview中
-                                string name = RIA.Value.ToString();
-                                addItemTree(name, device[index]);
-                                index++;
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine(ex);
-                        }
-                        finally
-                        {
-                            // 显示共捕捉输出设备数
-                            this.LabelDevicesNumber.Text = index.ToString();
-                            this.LabelStatusText.Text = "接收成功！已接受数目：" + index.ToString();
-                            // 关闭udp连接
-                            udpConnect.Close();
-                        }
                         break;
                     }
                 default: break;
@@ -399,6 +261,167 @@ namespace DeviceExplorer
 
             //treeview1的排序
             treeView1.TreeViewNodeSorter = new NodeSorter();
+        }
+
+
+        // 三个case的执行后端执行代码==========================================================
+        // case 0 的event
+        private int case0SendAndRecieve()
+        {
+            // 本机IP和监听端口号
+            localIpep = new IPEndPoint(BIA.Value, 44814);
+
+            // 发送UDP访问报文
+            udpConnect = new UdpClient(localIpep);
+            udpConnect.Client.ReceiveTimeout = 100;
+            byte[] sendbytes = { 0x63, 00, 00, 00, 00, 00, 00,
+                            00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
+                            00, 00, 00, 00, 00 };
+
+            IPEndPoint remoteIpep = new IPEndPoint(IPAddress.Parse("255.255.255.255"), 44818); // 发送到的IP地址和端口号
+            udpConnect.Send(sendbytes, sendbytes.Length, remoteIpep);
+
+            // 接收回传报文
+            try
+            {
+                while (true)
+                {
+                    // udpRecv接收数组，单次接收
+                    // 读取缓冲区数据
+                    udpRecv = udpConnect.Receive(ref localIpep);
+                    IPAddress ip = localIpep.Address;
+
+                    // 数组解包
+                    packageUnwarp(ref device[index], udpRecv, ip);
+
+
+                    // 当index大于最大设备数组，重置index
+                    if (index >= MaxDevicesNumber)
+                    {
+                        MessageBox.Show("超出设备上限！", "警告",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        index = 0;
+                    }
+
+                    // 获取主机名
+                    string name = getHostNameFun(BIA.Value.ToString());
+
+                    // 将设备添加到treeview中
+                    addItemTree(name, device[index]);
+                    index++;
+
+                    // 作用：防止界面假死
+                    // 代价：增加加载时间
+                    //Application.DoEvents();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            finally
+            {
+                // 关闭udp连接
+                udpConnect.Close();
+            }
+            return 0;
+        }
+
+        private int case1SendAndRecieve(String ipString)
+        {
+            // 配置发送Udp
+            localIpep = new IPEndPoint(BIA.Value, 44814); // 本机IP和监听端口号
+            udpConnect = new UdpClient(localIpep);
+            udpConnect.Client.ReceiveTimeout = 100;
+            byte[] sendbytes = { 0x63, 00, 00, 00, 00, 00, 00,
+                            00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
+                            00, 00, 00, 00, 00 };
+            //发送
+            IPEndPoint remoteIpep = new IPEndPoint(IPAddress.Parse(ipString), 44818); // 发送到的IP地址和端口号
+            udpConnect.Send(sendbytes, sendbytes.Length, remoteIpep);
+
+            try
+            {
+                // 接收udp，捕捉接收超时Exception
+                udpRecv = udpConnect.Receive(ref localIpep);
+            }
+            catch (Exception)
+            {
+                
+            }
+            finally
+            {
+                 IPAddress ip = localIpep.Address;
+
+                // 对接受进行解码
+                packageUnwarp(ref device[index], udpRecv, ip);
+                string name = getHostNameFun(BIA.Value.ToString());
+                addItemTree(name, device[index]);
+
+                index++;
+                if (index >= MaxDevicesNumber)
+                {
+                    MessageBox.Show("超出设备上限！", "警告",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    index = 0;
+                }
+
+                udpConnect.Close();
+            }
+            return 0;
+        }
+
+        private int case2SendAndRecieve()
+        {
+            // 本机IP和监听端口号
+            localIpep = new IPEndPoint(BIA.Value, 44814);
+
+            // 发送UDP访问报文
+            udpConnect = new UdpClient(localIpep);
+            udpConnect.Client.ReceiveTimeout = 100;
+            byte[] sendbytes = { 0x63, 00, 00, 00, 00, 00, 00,
+                            00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
+                            00, 00, 00, 00, 00 };
+
+            IPEndPoint remoteIpep = new IPEndPoint(IPAddress.Parse("255.255.255.255"), 44818); // 发送到的IP地址和端口号
+            udpConnect.Send(sendbytes, sendbytes.Length, remoteIpep);
+
+            // 接收回传报文
+            try
+            {
+                while (true)
+                {
+                    // udpRecv接收数组，单次接收
+                    // 读取缓冲区数据
+                    udpRecv = udpConnect.Receive(ref localIpep);
+                    IPAddress ip = localIpep.Address;
+
+                    // 数组解包
+                    packageUnwarp(ref device[index], udpRecv, ip);
+
+                    // 当index大于最大设备数组，重置index
+                    if (index >= MaxDevicesNumber)
+                    {
+                        MessageBox.Show("超出设备上限！", "警告",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        index = 0;
+                    }
+                    // 将设备添加到treeview中
+                    string name = RIA.Value.ToString();
+                    addItemTree(name, device[index]);
+                    index++;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            finally
+            {
+                // 关闭udp连接
+                udpConnect.Close();
+            }
+            return 0;
         }
 
         // 方法定义=======================================================
