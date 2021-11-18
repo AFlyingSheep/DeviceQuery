@@ -57,6 +57,7 @@ namespace DeviceExplorer
             this.ButtonAdd = new System.Windows.Forms.Button();
             this.ListBoxPointToPointIPAddress = new System.Windows.Forms.ListBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.ButtonSave = new System.Windows.Forms.Button();
             this.RefreshButton = new System.Windows.Forms.Button();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
@@ -73,10 +74,10 @@ namespace DeviceExplorer
             this.LabelTimeSet = new System.Windows.Forms.Label();
             this.TextBoxTimeSet = new System.Windows.Forms.TextBox();
             this.ButtonTimeSet = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.RSM = new FVD.Common.IPAddressTextBox();
             this.RIA = new FVD.Common.IPAddressTextBox();
             this.BIA = new FVD.Common.IPAddressTextBox();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -187,6 +188,7 @@ namespace DeviceExplorer
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.ButtonSave);
             this.panel2.Controls.Add(this.RefreshButton);
             this.panel2.Controls.Add(this.treeView1);
             this.panel2.Controls.Add(this.LabelDevicesNumber);
@@ -200,12 +202,22 @@ namespace DeviceExplorer
             this.panel2.Size = new System.Drawing.Size(697, 426);
             this.panel2.TabIndex = 6;
             // 
+            // ButtonSave
+            // 
+            this.ButtonSave.Location = new System.Drawing.Point(526, 349);
+            this.ButtonSave.Name = "ButtonSave";
+            this.ButtonSave.Size = new System.Drawing.Size(152, 34);
+            this.ButtonSave.TabIndex = 18;
+            this.ButtonSave.Text = "Save";
+            this.ButtonSave.UseVisualStyleBackColor = true;
+            this.ButtonSave.Click += new System.EventHandler(this.ButtonSave_Click);
+            // 
             // RefreshButton
             // 
             this.RefreshButton.Enabled = false;
-            this.RefreshButton.Location = new System.Drawing.Point(590, 68);
+            this.RefreshButton.Location = new System.Drawing.Point(526, 68);
             this.RefreshButton.Name = "RefreshButton";
-            this.RefreshButton.Size = new System.Drawing.Size(74, 33);
+            this.RefreshButton.Size = new System.Drawing.Size(152, 33);
             this.RefreshButton.TabIndex = 7;
             this.RefreshButton.Text = "Refresh";
             this.RefreshButton.UseVisualStyleBackColor = true;
@@ -218,7 +230,7 @@ namespace DeviceExplorer
             this.treeView1.Location = new System.Drawing.Point(20, 27);
             this.treeView1.Name = "treeView1";
             this.treeView1.SelectedImageIndex = 0;
-            this.treeView1.Size = new System.Drawing.Size(563, 349);
+            this.treeView1.Size = new System.Drawing.Size(499, 356);
             this.treeView1.TabIndex = 6;
             this.treeView1.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseDoubleClick);
             // 
@@ -232,7 +244,7 @@ namespace DeviceExplorer
             // LabelDevicesNumber
             // 
             this.LabelDevicesNumber.AutoSize = true;
-            this.LabelDevicesNumber.Location = new System.Drawing.Point(139, 395);
+            this.LabelDevicesNumber.Location = new System.Drawing.Point(141, 396);
             this.LabelDevicesNumber.Name = "LabelDevicesNumber";
             this.LabelDevicesNumber.Size = new System.Drawing.Size(15, 15);
             this.LabelDevicesNumber.TabIndex = 5;
@@ -241,7 +253,7 @@ namespace DeviceExplorer
             // LabelDevicesFound
             // 
             this.LabelDevicesFound.AutoSize = true;
-            this.LabelDevicesFound.Location = new System.Drawing.Point(14, 395);
+            this.LabelDevicesFound.Location = new System.Drawing.Point(16, 396);
             this.LabelDevicesFound.Name = "LabelDevicesFound";
             this.LabelDevicesFound.Size = new System.Drawing.Size(119, 15);
             this.LabelDevicesFound.TabIndex = 4;
@@ -249,9 +261,9 @@ namespace DeviceExplorer
             // 
             // ButtonClear
             // 
-            this.ButtonClear.Location = new System.Drawing.Point(589, 342);
+            this.ButtonClear.Location = new System.Drawing.Point(606, 110);
             this.ButtonClear.Name = "ButtonClear";
-            this.ButtonClear.Size = new System.Drawing.Size(75, 34);
+            this.ButtonClear.Size = new System.Drawing.Size(72, 34);
             this.ButtonClear.TabIndex = 3;
             this.ButtonClear.Text = "Clear";
             this.ButtonClear.UseVisualStyleBackColor = true;
@@ -260,9 +272,9 @@ namespace DeviceExplorer
             // ButtonStop
             // 
             this.ButtonStop.Enabled = false;
-            this.ButtonStop.Location = new System.Drawing.Point(589, 136);
+            this.ButtonStop.Location = new System.Drawing.Point(525, 109);
             this.ButtonStop.Name = "ButtonStop";
-            this.ButtonStop.Size = new System.Drawing.Size(75, 34);
+            this.ButtonStop.Size = new System.Drawing.Size(75, 35);
             this.ButtonStop.TabIndex = 2;
             this.ButtonStop.Text = "Stop";
             this.ButtonStop.UseVisualStyleBackColor = true;
@@ -270,9 +282,9 @@ namespace DeviceExplorer
             // 
             // ButtonStart
             // 
-            this.ButtonStart.Location = new System.Drawing.Point(589, 27);
+            this.ButtonStart.Location = new System.Drawing.Point(525, 27);
             this.ButtonStart.Name = "ButtonStart";
-            this.ButtonStart.Size = new System.Drawing.Size(75, 35);
+            this.ButtonStart.Size = new System.Drawing.Size(153, 35);
             this.ButtonStart.TabIndex = 1;
             this.ButtonStart.Text = "Start";
             this.ButtonStart.UseVisualStyleBackColor = true;
@@ -284,7 +296,7 @@ namespace DeviceExplorer
             this.ListBoxDevices.ItemHeight = 15;
             this.ListBoxDevices.Location = new System.Drawing.Point(20, 27);
             this.ListBoxDevices.Name = "ListBoxDevices";
-            this.ListBoxDevices.Size = new System.Drawing.Size(563, 349);
+            this.ListBoxDevices.Size = new System.Drawing.Size(480, 289);
             this.ListBoxDevices.TabIndex = 0;
             // 
             // LabelPointToPoint
@@ -351,6 +363,10 @@ namespace DeviceExplorer
             this.ButtonTimeSet.UseVisualStyleBackColor = true;
             this.ButtonTimeSet.Click += new System.EventHandler(this.ButtonTimeSet_Click);
             // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // RSM
             // 
             this.RSM.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -380,10 +396,6 @@ namespace DeviceExplorer
             this.BIA.Size = new System.Drawing.Size(167, 29);
             this.BIA.TabIndex = 11;
             this.BIA.Value = ((System.Net.IPAddress)(resources.GetObject("BIA.Value")));
-            // 
-            // timer1
-            // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // DeviceExplorer
             // 
@@ -453,6 +465,7 @@ namespace DeviceExplorer
         private ImageList imageList1;
         private Button RefreshButton;
         private System.Windows.Forms.Timer timer1;
+        private Button ButtonSave;
     }
 }
 

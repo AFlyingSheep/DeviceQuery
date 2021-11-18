@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -25,6 +26,7 @@ namespace DeviceExplorer
 
         Device[] device = new Device[MaxDevicesNumber];     // device对象数组
         static int index = 0;                               // 静态变量-设备数
+        public String savePath = null;
 
         public DeviceExplorer()
         {
@@ -285,6 +287,7 @@ namespace DeviceExplorer
 
             //treeview1的排序
             treeView1.TreeViewNodeSorter = new NodeSorter();
+            
         }
 
 
@@ -376,20 +379,21 @@ namespace DeviceExplorer
             finally
             {
                  IPAddress ip = localIpep.Address;
-
-                // 对接受进行解码
-                packageUnwarp(ref device[index], udpRecv, ip);
-                string name = getHostNameFun(BIA.Value.ToString());
-                addItemTree(name, device[index]);
-
-                index++;
-                if (index >= MaxDevicesNumber)
+                if (!String.Equals(ip.ToString(), "127.0.0.1"))
                 {
-                    MessageBox.Show("超出设备上限！", "警告",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    index = 0;
-                }
+                    // 对接受进行解码
+                    packageUnwarp(ref device[index], udpRecv, ip);
+                    string name = getHostNameFun(BIA.Value.ToString());
+                    addItemTree(name, device[index]);
 
+                    index++;
+                    if (index >= MaxDevicesNumber)
+                    {
+                        MessageBox.Show("超出设备上限！", "警告",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        index = 0;
+                    }
+                }
                 udpConnect.Close();
             }
             return 0;
@@ -419,6 +423,10 @@ namespace DeviceExplorer
                     // 读取缓冲区数据
                     udpRecv = udpConnect.Receive(ref localIpep);
                     IPAddress ip = localIpep.Address;
+                    if(String.Equals(ip.ToString() , "127.0.0.1"))
+                    {
+                        continue;
+                    }
 
                     // 数组解包
                     packageUnwarp(ref device[index], udpRecv, ip);
@@ -528,7 +536,7 @@ namespace DeviceExplorer
                 treeView1.Nodes.Add(parent,parent,0);
             }
 
-           
+            
             treeView1.SelectedNode = treeView1.Nodes[0];
             // 父节点展开
             treeView1.ExpandAll();
@@ -552,25 +560,37 @@ namespace DeviceExplorer
             // 通过节点名获取ip地址
             String nodeIp = treeNode.Text.Split('-')[0];
             // 遍历设备列表，查找属性
-            for(int i = 0; i < index; i++)
+            Device findDevice = getPropertiesAll(nodeIp);
+            showProperties(findDevice);
+        }
+
+        //查询节点属性
+        private Device getPropertiesAll(String ip)
+        {
+            for (int i = 0; i < index; i++)
             {
-                if (String.Equals(device[i].ips, nodeIp))
+                if (String.Equals(device[i].ips, ip))
                 {
-                    MessageBox.Show(
-                        "Address:               " + device[i].ips + "\n" +
-                        "Vendor:                " + device[i].Vendor + "\n" +
-                        "Product Type:      " + device[i].ProductType + "\n" +
-                        "Product Code       " + device[i].ProductCode + "\n" +
-                        "Device Name:       " + device[i].DeviceName + "\n" +
-                        "Serial Number:     " + device[i].SerialNumber + "\n"
+                    return device[i];
+                }
+            }
+            return null;
+        }
+
+        // 展示节点信息
+        private void showProperties(Device d)
+        {
+            MessageBox.Show(
+                        "Address:               " + d.ips + "\n" +
+                        "Vendor:                " + d.Vendor + "\n" +
+                        "Product Type:      " + d.ProductType + "\n" +
+                        "Product Code       " + d.ProductCode + "\n" +
+                        "Device Name:       " + d.DeviceName + "\n" +
+                        "Serial Number:     " + d.SerialNumber + "\n"
 
                         , "Device Properties", MessageBoxButtons.OK, MessageBoxIcon.Information
                         );
-                    break;
-                }
-            }
         }
-
 
         // 线程定义=======================================================
         // 时钟定时器
@@ -580,6 +600,62 @@ namespace DeviceExplorer
             timer1.Stop();
         }
 
+        private void ButtonSave_Click(object sender, EventArgs e)
+        {
+
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
+            dialog.Description = "请选择文件路径";
+
+            DialogResult dialogResult = dialog.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                string foldPath = dialog.SelectedPath;
+                DirectoryInfo theFolder = new DirectoryInfo(foldPath);
+                savePath = theFolder.FullName;
+            }
+            else if(dialogResult == DialogResult.Cancel)
+            {
+                return;
+            }
+
+            try
+            {
+                if (index == 0)
+                {
+                    MessageBox.Show("设备为空！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                String []nowTimes = DateTime.Now.ToLongTimeString().ToString().Split(':');
+                String nowTime = nowTimes[0] + "-" + nowTimes[1] + "-" + nowTimes[2];
+                String fileName = DateTime.Now.ToShortDateString().ToString() + "-" + nowTime + "-" + "Device.txt";
+                StreamWriter streamWriter = new StreamWriter(savePath + "\\" + fileName, true);
+                //
+
+                //遍历所有根节点
+                foreach (TreeNode n in treeView1.Nodes)
+                {
+                    streamWriter.WriteLine(n.Text.ToString());
+                    foreach (TreeNode child in n.Nodes)
+                    {
+                        Device findDevice = getPropertiesAll(child.Text.Split('-')[0]);
+                        streamWriter.WriteLine("    Device Name:" + findDevice.DeviceName);
+                        streamWriter.WriteLine("    Device Address:" + findDevice.ips);
+                        streamWriter.WriteLine("    Product Type:" + findDevice.ProductType);
+                        streamWriter.WriteLine("    Product Code:" + findDevice.ProductCode);
+                        streamWriter.WriteLine("    Serial Number:" + findDevice.SerialNumber);
+                        streamWriter.WriteLine(" ");
+                    }
+                }
+                this.LabelStatusText.Text = "保存成功！";
+                MessageBox.Show("保存成功！", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                streamWriter.Close();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("保存失败！", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
+        }
     }
 
     // 设备类
