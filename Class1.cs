@@ -179,15 +179,12 @@ namespace FVD.Common
                 {
                     if (int.Parse(((TextBox)sender).Text + e.KeyChar.ToString()) > 255)
                     {
-                        e.Handled = true;
+                        ((TextBox)sender).Text = "255";
                     }
                 }
-                else if (TextLength == 0)
+                else if (TextLength == 1&& ((TextBox)sender).Text=="0")
                 {
-                    if (KeyChar == '0')
-                    {
-                        e.Handled = true;
-                    }
+                    e.Handled = true;
                 }
             }
             else
