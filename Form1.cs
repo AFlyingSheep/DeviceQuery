@@ -62,7 +62,17 @@ namespace DeviceExplorer
                     {
                         // 状态变更
                         this.LabelStatusText.Text = "发送中……";
-                        case0SendAndRecieve();
+                        try
+                        {
+                            case0SendAndRecieve();
+                        }
+                        catch(System.Net.Sockets.SocketException ex)
+                        {
+                            MessageBox.Show("IP地址无效！", "错误！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            stopFunc();
+                            this.LabelStatusText.Text = "接收失败！" + index.ToString();
+                            return;
+                        }
                         // 显示共捕捉输出设备数
                         this.LabelDevicesNumber.Text = index.ToString();
                         this.LabelStatusText.Text = "接收成功！已接受数目：" + index.ToString();
@@ -88,7 +98,17 @@ namespace DeviceExplorer
                         // 向每个目标发送udp
                         for (int i = 0; i < sumIp; i++)
                         {
-                            case1SendAndRecieve(ipString[i]);
+                            try
+                            {
+                                case1SendAndRecieve(ipString[i]);
+                            }
+                            catch (System.Net.Sockets.SocketException ex)
+                            {
+                                MessageBox.Show("IP地址无效！", "错误！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                this.LabelStatusText.Text = "接收失败！" + index.ToString();
+                                stopFunc();
+                                return;
+                            }
                         }
 
                         this.LabelStatusText.Text = "接收成功！已接受数目：" + index.ToString();
@@ -110,7 +130,18 @@ namespace DeviceExplorer
                         // 状态变更
                         this.LabelStatusText.Text = "发送中……";
 
-                        case2SendAndRecieve();
+                        try
+                        {
+                            case2SendAndRecieve();
+                        }
+                        catch (System.Net.Sockets.SocketException ex)
+                        {
+                            MessageBox.Show("IP地址无效！", "错误！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            this.LabelStatusText.Text = "接收失败！" + index.ToString();
+                            stopFunc();
+                            return;
+                        }
+                        
 
                         // 显示共捕捉输出设备数
                         this.LabelDevicesNumber.Text = index.ToString();
@@ -127,20 +158,7 @@ namespace DeviceExplorer
         // 停止按钮的Event
         private void ButtonStop_Click(object sender, EventArgs e)
         {
-            RefreshButton.Enabled = false;
-            ButtonStop.Enabled = false;
-            ButtonStart.Enabled = true;
-            ComboBoxBrowseMode.Enabled = true;
-            TextBoxTimeSet.Enabled = true;
-            ButtonTimeSet.Enabled = true;
-            RefreshButton.Enabled = true;
-            BIA.Enabled = true;
-
-            // 关闭定时器线程
-            this.LabelStatusText.Text = "成功关闭";
-            timer1.Enabled = false;
-            timer1.Stop();
-
+            stopFunc();
         }
 
         // 清理按钮单击Event
@@ -431,6 +449,25 @@ namespace DeviceExplorer
         }
 
         // 方法定义=======================================================
+       
+        // 停止按钮
+        private void stopFunc()
+        {
+            RefreshButton.Enabled = false;
+            ButtonStop.Enabled = false;
+            ButtonStart.Enabled = true;
+            ComboBoxBrowseMode.Enabled = true;
+            TextBoxTimeSet.Enabled = true;
+            ButtonTimeSet.Enabled = true;
+            RefreshButton.Enabled = true;
+            BIA.Enabled = true;
+
+            // 关闭定时器线程
+            this.LabelStatusText.Text = "成功关闭";
+            timer1.Enabled = false;
+            timer1.Stop();
+        }
+
         // 远程子网广播地址计算
         public static string GetBroadcast(string ipAddress, string subnetMask)
             {
