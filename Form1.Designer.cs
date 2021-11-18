@@ -78,6 +78,10 @@ namespace DeviceExplorer
             this.RSM = new FVD.Common.IPAddressTextBox();
             this.RIA = new FVD.Common.IPAddressTextBox();
             this.BIA = new FVD.Common.IPAddressTextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.delayBox = new System.Windows.Forms.TextBox();
+            this.DelayButtom = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -94,7 +98,7 @@ namespace DeviceExplorer
             // LabelRemoteIPAddress
             // 
             this.LabelRemoteIPAddress.AutoSize = true;
-            this.LabelRemoteIPAddress.Location = new System.Drawing.Point(743, 40);
+            this.LabelRemoteIPAddress.Location = new System.Drawing.Point(748, 25);
             this.LabelRemoteIPAddress.Name = "LabelRemoteIPAddress";
             this.LabelRemoteIPAddress.Size = new System.Drawing.Size(151, 15);
             this.LabelRemoteIPAddress.TabIndex = 1;
@@ -112,7 +116,7 @@ namespace DeviceExplorer
             // LabelRemoteSubnetMask
             // 
             this.LabelRemoteSubnetMask.AutoSize = true;
-            this.LabelRemoteSubnetMask.Location = new System.Drawing.Point(744, 71);
+            this.LabelRemoteSubnetMask.Location = new System.Drawing.Point(748, 55);
             this.LabelRemoteSubnetMask.Name = "LabelRemoteSubnetMask";
             this.LabelRemoteSubnetMask.Size = new System.Drawing.Size(159, 15);
             this.LabelRemoteSubnetMask.TabIndex = 3;
@@ -339,7 +343,7 @@ namespace DeviceExplorer
             // LabelTimeSet
             // 
             this.LabelTimeSet.AutoSize = true;
-            this.LabelTimeSet.Location = new System.Drawing.Point(426, 66);
+            this.LabelTimeSet.Location = new System.Drawing.Point(426, 81);
             this.LabelTimeSet.Name = "LabelTimeSet";
             this.LabelTimeSet.Size = new System.Drawing.Size(103, 15);
             this.LabelTimeSet.TabIndex = 15;
@@ -347,7 +351,7 @@ namespace DeviceExplorer
             // 
             // TextBoxTimeSet
             // 
-            this.TextBoxTimeSet.Location = new System.Drawing.Point(535, 63);
+            this.TextBoxTimeSet.Location = new System.Drawing.Point(535, 78);
             this.TextBoxTimeSet.Name = "TextBoxTimeSet";
             this.TextBoxTimeSet.Size = new System.Drawing.Size(100, 25);
             this.TextBoxTimeSet.TabIndex = 16;
@@ -355,7 +359,7 @@ namespace DeviceExplorer
             // 
             // ButtonTimeSet
             // 
-            this.ButtonTimeSet.Location = new System.Drawing.Point(653, 66);
+            this.ButtonTimeSet.Location = new System.Drawing.Point(653, 80);
             this.ButtonTimeSet.Name = "ButtonTimeSet";
             this.ButtonTimeSet.Size = new System.Drawing.Size(75, 23);
             this.ButtonTimeSet.TabIndex = 17;
@@ -370,7 +374,7 @@ namespace DeviceExplorer
             // RSM
             // 
             this.RSM.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.RSM.Location = new System.Drawing.Point(910, 66);
+            this.RSM.Location = new System.Drawing.Point(910, 51);
             this.RSM.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.RSM.Name = "RSM";
             this.RSM.Size = new System.Drawing.Size(167, 28);
@@ -380,7 +384,7 @@ namespace DeviceExplorer
             // RIA
             // 
             this.RIA.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.RIA.Location = new System.Drawing.Point(910, 33);
+            this.RIA.Location = new System.Drawing.Point(910, 18);
             this.RIA.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.RIA.Name = "RIA";
             this.RIA.Size = new System.Drawing.Size(167, 35);
@@ -397,11 +401,51 @@ namespace DeviceExplorer
             this.BIA.TabIndex = 11;
             this.BIA.Value = ((System.Net.IPAddress)(resources.GetObject("BIA.Value")));
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(749, 89);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(126, 15);
+            this.label1.TabIndex = 18;
+            this.label1.Text = "Maximum delay：";
+            // 
+            // delayBox
+            // 
+            this.delayBox.Location = new System.Drawing.Point(910, 86);
+            this.delayBox.Name = "delayBox";
+            this.delayBox.Size = new System.Drawing.Size(51, 25);
+            this.delayBox.TabIndex = 19;
+            this.delayBox.Text = "100";
+            // 
+            // DelayButtom
+            // 
+            this.DelayButtom.Location = new System.Drawing.Point(1006, 86);
+            this.DelayButtom.Name = "DelayButtom";
+            this.DelayButtom.Size = new System.Drawing.Size(71, 25);
+            this.DelayButtom.TabIndex = 20;
+            this.DelayButtom.Text = "Set";
+            this.DelayButtom.UseVisualStyleBackColor = true;
+            this.DelayButtom.Click += new System.EventHandler(this.DelayButtom_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(967, 89);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(23, 15);
+            this.label2.TabIndex = 21;
+            this.label2.Text = "ms";
+            // 
             // DeviceExplorer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1158, 594);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.DelayButtom);
+            this.Controls.Add(this.delayBox);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.ButtonTimeSet);
             this.Controls.Add(this.TextBoxTimeSet);
             this.Controls.Add(this.LabelTimeSet);
@@ -466,6 +510,10 @@ namespace DeviceExplorer
         private Button RefreshButton;
         private System.Windows.Forms.Timer timer1;
         private Button ButtonSave;
+        private Label label1;
+        private TextBox delayBox;
+        private Button DelayButtom;
+        private Label label2;
     }
 }
 

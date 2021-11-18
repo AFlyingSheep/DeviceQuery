@@ -28,6 +28,10 @@ namespace DeviceExplorer
         static int index = 0;                               // 静态变量-设备数
         public String savePath = null;
 
+        public int[] maskBox = { 0, 1, 2, 4, 8, 16, 32, 64, 128, 256 };
+
+        public static int delayTime = 100;
+
         public DeviceExplorer()
         {
             InitializeComponent();
@@ -45,6 +49,8 @@ namespace DeviceExplorer
             ButtonTimeSet.Enabled = false;
             RefreshButton.Enabled = false;
             BIA.Enabled = false;
+            delayBox.Enabled = false;
+            DelayButtom.Enabled = false;
 
 
             index = 0;
@@ -124,7 +130,8 @@ namespace DeviceExplorer
                         //子网掩码、IP及广播地址的计算
                         String mask = RSM.Value.ToString();
                         String remoteIp = RIA.Value.ToString();
-                        String boardcastIP = GetBroadcast(remoteIp, mask);
+                        int countIp = 0;
+                        String[] boardcastIP = getBoardIP(remoteIp, mask, ref countIp);
 
                         // 清空设备列表
                         this.treeView1.Nodes.Clear();
@@ -134,7 +141,7 @@ namespace DeviceExplorer
 
                         try
                         {
-                            case2SendAndRecieve();
+                            case2SendAndRecieve(boardcastIP);
                         }
                         catch (System.Net.Sockets.SocketException ex)
                         {
@@ -252,6 +259,8 @@ namespace DeviceExplorer
                         ButtonRemove.Enabled = false;
                         RIA.Enabled = false;
                         RSM.Enabled = false;
+                        delayBox.Enabled = false;
+                        DelayButtom.Enabled = false;
                         break;
                     }
 
@@ -263,6 +272,8 @@ namespace DeviceExplorer
                         ButtonRemove.Enabled = true;
                         RIA.Enabled = false;
                         RSM.Enabled = false;
+                        delayBox.Enabled = false;
+                        DelayButtom.Enabled = false;
                         break;
                     }
 
@@ -274,6 +285,8 @@ namespace DeviceExplorer
                         ButtonRemove.Enabled = false;
                         RIA.Enabled = true;
                         RSM.Enabled = true;
+                        delayBox.Enabled = true;
+                        DelayButtom.Enabled = true;
                         break;
                     }
                 default: break;
@@ -399,60 +412,70 @@ namespace DeviceExplorer
             return 0;
         }
 
-        private int case2SendAndRecieve()
+        private int case2SendAndRecieve(String[] boardcastIP)
         {
-            // 本机IP和监听端口号
-            localIpep = new IPEndPoint(BIA.Value, 44814);
-
-            // 发送UDP访问报文
-            udpConnect = new UdpClient(localIpep);
-            udpConnect.Client.ReceiveTimeout = 100;
-            byte[] sendbytes = { 0x63, 00, 00, 00, 00, 00, 00,
-                            00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
-                            00, 00, 00, 00, 00 };
-
-            IPEndPoint remoteIpep = new IPEndPoint(IPAddress.Parse("255.255.255.255"), 44818); // 发送到的IP地址和端口号
-            udpConnect.Send(sendbytes, sendbytes.Length, remoteIpep);
-
-            // 接收回传报文
-            try
+            ButtonStop.Enabled = false;
+            for(int i = 0; i < boardcastIP.Length; i++)
             {
-                while (true)
+                if (String.Equals(boardcastIP[i], "127.0.0.0"))
                 {
-                    // udpRecv接收数组，单次接收
-                    // 读取缓冲区数据
-                    udpRecv = udpConnect.Receive(ref localIpep);
-                    IPAddress ip = localIpep.Address;
-                    if(String.Equals(ip.ToString() , "127.0.0.1"))
-                    {
-                        continue;
-                    }
+                    continue;
+                }
+                // 本机IP和监听端口号
+                localIpep = new IPEndPoint(BIA.Value, 44814);
 
-                    // 数组解包
-                    packageUnwarp(ref device[index], udpRecv, ip);
+                // 发送UDP访问报文
+                udpConnect = new UdpClient(localIpep);
+                udpConnect.Client.ReceiveTimeout = 10;
+                byte[] sendbytes = { 0x63, 00, 00, 00, 00, 00, 00,
+                        00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
+                        00, 00, 00, 00, 00 };
 
-                    // 当index大于最大设备数组，重置index
-                    if (index >= MaxDevicesNumber)
+                IPEndPoint remoteIpep = new IPEndPoint(IPAddress.Parse(boardcastIP[i]), 44818); // 发送到的IP地址和端口号
+                udpConnect.Send(sendbytes, sendbytes.Length, remoteIpep);
+
+                // 接收回传报文
+                try
+                {
+                    while (true)
                     {
-                        MessageBox.Show("超出设备上限！", "警告",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        index = 0;
+                        // udpRecv接收数组，单次接收
+                        // 读取缓冲区数据
+                        udpRecv = udpConnect.Receive(ref localIpep);
+                        IPAddress ip = localIpep.Address;
+                        if (String.Equals(ip.ToString(), "127.0.0.1"))
+                        {
+                            continue;
+                        }
+
+                        // 数组解包
+                        packageUnwarp(ref device[index], udpRecv, ip);
+
+                        // 当index大于最大设备数组，重置index
+                        if (index >= MaxDevicesNumber)
+                        {
+                            MessageBox.Show("超出设备上限！", "警告",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            index = 0;
+                        }
+                        // 将设备添加到treeview中
+                        string name = RIA.Value.ToString() + "所在的子网";
+                        addItemTree(name, device[index]);
+                        index++;
+                        Application.DoEvents();
                     }
-                    // 将设备添加到treeview中
-                    string name = RIA.Value.ToString();
-                    addItemTree(name, device[index]);
-                    index++;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+                finally
+                {
+                    // 关闭udp连接
+                    udpConnect.Close();
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-            finally
-            {
-                // 关闭udp连接
-                udpConnect.Close();
-            }
+            ButtonStop.Enabled = true;
             return 0;
         }
 
@@ -469,12 +492,94 @@ namespace DeviceExplorer
             ButtonTimeSet.Enabled = true;
             RefreshButton.Enabled = true;
             BIA.Enabled = true;
+            delayBox.Enabled = true;
+            DelayButtom.Enabled = true;
 
             // 关闭定时器线程
             this.LabelStatusText.Text = "成功关闭";
             timer1.Enabled = false;
             timer1.Stop();
         }
+
+        private string [] getBoardIP(string ipAddress, string subnetMask,ref int countIp)
+        {
+            //统计子网掩码中1的数量
+            string[] mask = subnetMask.Split('.');
+            for(int i = 0; i < 3; i++)
+            {
+                mask[i] = Convert.ToString(Convert.ToInt32(mask[i]), 2);
+            }
+
+            int countOne = 0;
+            foreach (char i in mask[0] + mask[1] + mask[2] + mask[3])
+            {
+                if (String.Equals(i, '1'))
+                {
+                    countOne++;
+                }
+            }
+
+            // 将ip地址转化为二进制字符串形式
+            string[] ipAddressBit = ipAddress.Split('.');
+
+            for (int i = 0; i < 4; i++)
+            {
+                ipAddressBit[i] = Convert.ToString(Convert.ToInt32(ipAddressBit[i]), 2);
+                // 填0占位操作
+                if (ipAddressBit[i].Length < 8)
+                {
+                    var builder1 = new StringBuilder();
+                    for (int j = 0; j < 8 - ipAddressBit[i].Length; j++)
+                    {
+                        builder1.Append("0");
+                    }
+                    ipAddressBit[i] = builder1 + ipAddressBit[i];
+                }
+            }
+
+            // 得到的二进制ip地址
+            string ipBit = ipAddressBit[0] + ipAddressBit[1] + ipAddressBit[2] + ipAddressBit[3];
+            ipBit = ipBit.Substring(0, countOne);
+
+            int countZero = 32 - countOne;
+            countIp = Convert.ToInt32(Math.Pow(2, countZero));
+            var builder = new StringBuilder();
+            // 如果子网掩码对应的为1，则对应位保持原样
+            for(int i = 0; i < countOne; i++)
+            {
+                builder.Append(ipBit[i]);
+            }
+
+            string[] resultIPs = new string[countIp];
+            // 遍历子网所有ip地址并添加进返回数组
+            for (int i = 0; i < countIp; i++)
+            {
+                string temp = Convert.ToString(i, 2);
+                // 添加前置0操作
+                if (temp.Length <= countZero)
+                {
+                    var builder2 = new StringBuilder();
+                    for (int j = 0; j < countZero - temp.Length; j++)
+                    {
+                        builder2.Append("0");
+                    }
+                    //得到ip地址的二进制表示
+                    temp = ipBit+ builder2 + temp;
+                }
+
+                // 转换为二进制地址形式
+                resultIPs[i] =
+                    Convert.ToInt32(temp.Substring(0, 8), 2).ToString() + "." +
+                    Convert.ToInt32(temp.Substring(8, 8), 2).ToString() + "." +
+                    Convert.ToInt32(temp.Substring(16, 8), 2).ToString() + "." +
+                    Convert.ToInt32(temp.Substring(24, 8), 2).ToString();
+
+            }
+
+            
+            return resultIPs;
+        }
+
 
         // 远程子网广播地址计算
         public static string GetBroadcast(string ipAddress, string subnetMask)
@@ -655,6 +760,35 @@ namespace DeviceExplorer
                 MessageBox.Show("保存失败！", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             
+        }
+
+        private void DelayButtom_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int time = Convert.ToInt32(delayBox.Text);
+                if (time < 50)
+                {
+                    DialogResult dr =  MessageBox.Show("轮询时间请尽量大于50ms以确保设备均被检测", "提示", 
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (dr.Equals(DialogResult.Yes))
+                    {
+                        delayTime = time;
+                        MessageBox.Show("设置成功！", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+                delayTime = time;
+                MessageBox.Show("设置成功！", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("输入错误！", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 
