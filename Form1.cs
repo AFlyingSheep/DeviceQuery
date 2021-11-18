@@ -536,7 +536,7 @@ namespace DeviceExplorer
         }
     }
 
-    //ip地址排序器
+    //ip地址排序器 
     public class NodeSorter : IComparer
     {
         // 实现接口的compare方法
