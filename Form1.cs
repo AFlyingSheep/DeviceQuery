@@ -734,7 +734,9 @@ namespace DeviceExplorer
                 String []nowTimes = DateTime.Now.ToLongTimeString().ToString().
                     Split(new char[] {'/',':' });
                 String nowTime = nowTimes[0] + "-" + nowTimes[1] + "-" + nowTimes[2];
-                String fileName = DateTime.Now.ToShortDateString().ToString() + "-" + nowTime + "-" + "Device.txt";
+                String [] DataNames = DateTime.Now.ToShortDateString().ToString().Split(new char[] { '/', ':', '-' });
+                String DataName = DataNames[0] + "-" + DataNames[1] + "-" + DataNames[2];
+                String fileName = DataName + "-" + nowTime + "-" + "Device.txt";
                 StreamWriter streamWriter = new StreamWriter(savePath + "\\" + fileName, true);
                 //
 
