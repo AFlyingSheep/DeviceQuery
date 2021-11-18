@@ -286,7 +286,6 @@ namespace DeviceExplorer
             this.ListBoxDevices.Name = "ListBoxDevices";
             this.ListBoxDevices.Size = new System.Drawing.Size(563, 349);
             this.ListBoxDevices.TabIndex = 0;
-            this.ListBoxDevices.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxDevices_MouseDoubleClick);
             // 
             // LabelPointToPoint
             // 

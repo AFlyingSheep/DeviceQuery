@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -42,6 +43,7 @@ namespace DeviceExplorer
             ButtonTimeSet.Enabled = false;
             RefreshButton.Enabled = false;
             BIA.Enabled = false;
+
 
             index = 0;
             this.treeView1.Nodes.Clear();
@@ -102,6 +104,10 @@ namespace DeviceExplorer
                                 // 将设备添加到treeview中
                                 addItemTree(name,device[index]);
                                 index++;
+
+                                // 作用：防止界面假死
+                                // 代价：增加加载时间
+                                //Application.DoEvents();
                             }
                         }
                         catch (Exception ex)
@@ -153,7 +159,7 @@ namespace DeviceExplorer
                                 // 接收udp，捕捉接收超时Exception
                                 udpRecv = udpConnect.Receive(ref localIpep);
                             }
-                            catch (Exception ex)
+                            catch (Exception)
                             {
                                 continue;
                             }
@@ -275,37 +281,11 @@ namespace DeviceExplorer
 
         }
 
-
-
         // 清理按钮单击Event
         private void ButtonClear_Click(object sender, EventArgs e)
         {
             // 清空listbox内容
             this.treeView1.Nodes.Clear();
-        }
-
-        // listbox双击事件
-        private void listBoxDevices_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            // get双击item的index
-            int index = this.ListBoxDevices.IndexFromPoint(e.Location);
-            // get -1 即啥也没点到
-            if (index == -1)
-            {
-                return;
-            }
-
-            // 展示device的属性
-            MessageBox.Show(
-                "Address:               " + device[index].ips + "\n" +
-                "Vendor:                " + device[index].Vendor + "\n" +
-                "Product Type:      " + device[index].ProductType + "\n" +
-                "Product Code       " + device[index].ProductCode + "\n" +
-                "Device Name:       " + device[index].DeviceName + "\n" +
-                "Serial Number:     " + device[index].SerialNumber + "\n"
-
-                , "Device Properties", MessageBoxButtons.OK, MessageBoxIcon.Information
-                );
         }
 
         // 给定ip地址的模型-添加按钮单击Event
@@ -363,25 +343,8 @@ namespace DeviceExplorer
             {
                 if (e.Node.Level == 1)                               //判断子节点才响应
                 {
-                    // get双击item的index
-                    int index = e.Node.Index;
-                    // get -1 即啥也没点到
-                    if (index == -1)
-                    {
-                        return;
-                    }
-
-                    // 展示device的属性
-                    MessageBox.Show(
-                        "Address:               " + device[index].ips + "\n" +
-                        "Vendor:                " + device[index].Vendor + "\n" +
-                        "Product Type:      " + device[index].ProductType + "\n" +
-                        "Product Code       " + device[index].ProductCode + "\n" +
-                        "Device Name:       " + device[index].DeviceName + "\n" +
-                        "Serial Number:     " + device[index].SerialNumber + "\n"
-
-                        , "Device Properties", MessageBoxButtons.OK, MessageBoxIcon.Information
-                        );
+                    // 查询节点属性并展示
+                    getProperties(e.Node);
                 }
 
             }
@@ -433,6 +396,9 @@ namespace DeviceExplorer
         private void DeviceExplorer_Load(object sender, EventArgs e)
         {
             ComboBoxBrowseMode.SelectedIndex = 0;
+
+            //treeview1的排序
+            treeView1.TreeViewNodeSorter = new NodeSorter();
         }
 
         // 方法定义=======================================================
@@ -501,6 +467,7 @@ namespace DeviceExplorer
             // 父节点展开
             treeView1.ExpandAll();
             // 子节点插入
+            //treeView1.Sort();
             treeView1.SelectedNode.Nodes.Add(device.ips + "-" + device.DeviceName, device.ips + "-" + device.DeviceName,1,1);
         }
 
@@ -514,6 +481,32 @@ namespace DeviceExplorer
             return name;
         }
 
+        // 查询节点属性并显示
+        private void getProperties(TreeNode treeNode)
+        {
+            // 通过节点名获取ip地址
+            String nodeIp = treeNode.Text.Split('-')[0];
+            // 遍历设备列表，查找属性
+            for(int i = 0; i < index; i++)
+            {
+                if (String.Equals(device[i].ips, nodeIp))
+                {
+                    MessageBox.Show(
+                        "Address:               " + device[i].ips + "\n" +
+                        "Vendor:                " + device[i].Vendor + "\n" +
+                        "Product Type:      " + device[i].ProductType + "\n" +
+                        "Product Code       " + device[i].ProductCode + "\n" +
+                        "Device Name:       " + device[i].DeviceName + "\n" +
+                        "Serial Number:     " + device[i].SerialNumber + "\n"
+
+                        , "Device Properties", MessageBoxButtons.OK, MessageBoxIcon.Information
+                        );
+                    break;
+                }
+            }
+        }
+
+
         // 线程定义=======================================================
         // 时钟定时器
         private void timer1_Tick(object sender, EventArgs e)
@@ -521,6 +514,7 @@ namespace DeviceExplorer
             RefreshButton.Enabled = true;
             timer1.Stop();
         }
+
     }
 
     // 设备类
@@ -540,6 +534,32 @@ namespace DeviceExplorer
             ProductCode = 0;
             DeviceName = null;
             SerialNumber = null;
+        }
+    }
+
+    public class NodeSorter : IComparer
+    {
+        public int Compare(object x,object y)
+        {
+            TreeNode tx = x as TreeNode;
+            TreeNode ty = y as TreeNode;
+
+            String[] txValue = tx.Text.Split('.');
+            String[] tyValue = ty.Text.Split('.');
+            txValue[3] = txValue[3].Split('-')[0];
+            tyValue[3] = tyValue[3].Split('-')[0];
+            for (int i = 0; i < 4; i++)
+            {
+                if(Convert.ToInt32(txValue[i])> Convert.ToInt32(tyValue[i]))
+                {
+                    return 1;
+                }
+                else if(Convert.ToInt32(txValue[i]) < Convert.ToInt32(tyValue[i]))
+                {
+                    return -1;
+                }
+            }
+            return 0;
         }
     }
 }
