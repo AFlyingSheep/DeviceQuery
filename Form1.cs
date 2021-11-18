@@ -195,6 +195,12 @@ namespace DeviceExplorer
                 Console.WriteLine(ex);
                 return;
             }
+            catch(OverflowException ex)
+            {
+                MessageBox.Show("数值过大！", "错误！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Console.WriteLine(ex);
+                return;
+            }
 
 
         }
