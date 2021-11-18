@@ -731,7 +731,8 @@ namespace DeviceExplorer
                     MessageBox.Show("设备为空！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                String []nowTimes = DateTime.Now.ToLongTimeString().ToString().Split(':');
+                String []nowTimes = DateTime.Now.ToLongTimeString().ToString().
+                    Split(new char[] {'\\',':' });
                 String nowTime = nowTimes[0] + "-" + nowTimes[1] + "-" + nowTimes[2];
                 String fileName = DateTime.Now.ToShortDateString().ToString() + "-" + nowTime + "-" + "Device.txt";
                 StreamWriter streamWriter = new StreamWriter(savePath + "\\" + fileName, true);
