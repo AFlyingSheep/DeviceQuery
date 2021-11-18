@@ -57,6 +57,7 @@ namespace DeviceExplorer
             this.ButtonAdd = new System.Windows.Forms.Button();
             this.ListBoxPointToPointIPAddress = new System.Windows.Forms.ListBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.RefreshButton = new System.Windows.Forms.Button();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.LabelDevicesNumber = new System.Windows.Forms.Label();
@@ -75,6 +76,7 @@ namespace DeviceExplorer
             this.RSM = new FVD.Common.IPAddressTextBox();
             this.RIA = new FVD.Common.IPAddressTextBox();
             this.BIA = new FVD.Common.IPAddressTextBox();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -185,6 +187,7 @@ namespace DeviceExplorer
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.RefreshButton);
             this.panel2.Controls.Add(this.treeView1);
             this.panel2.Controls.Add(this.LabelDevicesNumber);
             this.panel2.Controls.Add(this.LabelDevicesFound);
@@ -196,6 +199,17 @@ namespace DeviceExplorer
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(697, 426);
             this.panel2.TabIndex = 6;
+            // 
+            // RefreshButton
+            // 
+            this.RefreshButton.Enabled = false;
+            this.RefreshButton.Location = new System.Drawing.Point(590, 68);
+            this.RefreshButton.Name = "RefreshButton";
+            this.RefreshButton.Size = new System.Drawing.Size(74, 33);
+            this.RefreshButton.TabIndex = 7;
+            this.RefreshButton.Text = "Refresh";
+            this.RefreshButton.UseVisualStyleBackColor = true;
+            this.RefreshButton.Click += new System.EventHandler(this.ButtonStart_Click);
             // 
             // treeView1
             // 
@@ -235,7 +249,7 @@ namespace DeviceExplorer
             // 
             // ButtonClear
             // 
-            this.ButtonClear.Location = new System.Drawing.Point(589, 109);
+            this.ButtonClear.Location = new System.Drawing.Point(589, 342);
             this.ButtonClear.Name = "ButtonClear";
             this.ButtonClear.Size = new System.Drawing.Size(75, 34);
             this.ButtonClear.TabIndex = 3;
@@ -246,7 +260,7 @@ namespace DeviceExplorer
             // ButtonStop
             // 
             this.ButtonStop.Enabled = false;
-            this.ButtonStop.Location = new System.Drawing.Point(589, 69);
+            this.ButtonStop.Location = new System.Drawing.Point(589, 136);
             this.ButtonStop.Name = "ButtonStop";
             this.ButtonStop.Size = new System.Drawing.Size(75, 34);
             this.ButtonStop.TabIndex = 2;
@@ -368,6 +382,10 @@ namespace DeviceExplorer
             this.BIA.TabIndex = 11;
             this.BIA.Value = ((System.Net.IPAddress)(resources.GetObject("BIA.Value")));
             // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // DeviceExplorer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -434,6 +452,8 @@ namespace DeviceExplorer
         private Button ButtonTimeSet;
         private TreeView treeView1;
         private ImageList imageList1;
+        private Button RefreshButton;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 

@@ -22,26 +22,35 @@ namespace DeviceExplorer
         public const int MaxDevicesNumber = 3000;           // public yyds 最大设备数
         public int ClockCountTime = 5000;                   // 计时器间隔
 
-        static bool IsStart = false;                        // 是否已经开始
         Device[] device = new Device[MaxDevicesNumber];     // device对象数组
         static int index = 0;                               // 静态变量-设备数
 
-        static Thread clock;                                // 计时器线程
-        static bool needToFlush = false;                    // 是否到时间需要刷新
         public DeviceExplorer()
         {
             InitializeComponent();
         }
-        // Evet定义=======================================================
+        // Event定义=======================================================
 
         //开始单击Event
         private void ButtonStart_Click(object sender, EventArgs e)
         {
+            // 按钮限制
             ButtonStop.Enabled = true;
             ButtonStart.Enabled = false;
+            ComboBoxBrowseMode.Enabled = false;
+            TextBoxTimeSet.Enabled = false;
+            ButtonTimeSet.Enabled = false;
+            RefreshButton.Enabled = false;
+            BIA.Enabled = false;
 
             index = 0;
             this.treeView1.Nodes.Clear();
+
+            //定时器开始
+            timer1.Interval = ClockCountTime;
+            timer1.Enabled = true;
+            timer1.Start();
+
             //模式选择 0 1 2 3
             int item = ComboBoxBrowseMode.SelectedIndex;
             switch (item)
@@ -49,12 +58,6 @@ namespace DeviceExplorer
                 // 本地广播
                 case 0:
                     {
-                        needToFlush = true;
-
-                        // 计时器线程
-                        clock = new Thread(clockCount);
-                        clock.Start();
-
                         // 状态变更
                         this.LabelStatusText.Text = "发送中……";
 
@@ -86,7 +89,12 @@ namespace DeviceExplorer
 
 
                                 // 当index大于最大设备数组，重置index
-                                if (index >= MaxDevicesNumber) index = 0;
+                                if (index >= MaxDevicesNumber)
+                                {
+                                    MessageBox.Show("超出设备上限！", "警告",
+                                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    index = 0;
+                                }
 
                                 // 获取主机名
                                 string name = getHostNameFun(BIA.Value.ToString());
@@ -105,7 +113,6 @@ namespace DeviceExplorer
                             // 显示共捕捉输出设备数
                             this.LabelDevicesNumber.Text = index.ToString();
                             this.LabelStatusText.Text = "接收成功！已接受数目：" + index.ToString();
-                            needToFlush = false;
                             // 关闭udp连接
                             udpConnect.Close();
                         }
@@ -116,10 +123,6 @@ namespace DeviceExplorer
                         // 统计同游多少条需要发送的ip并转化为数组
                         int sumIp = ListBoxPointToPointIPAddress.Items.Count;
                         String[] ipString = new string[sumIp];
-
-                        // 开启定时器
-                        clock = new Thread(clockCount);
-                        clock.Start();
 
                         // 将ip转化为string存入字符串数组
                         for (int i = 0; i < sumIp; i++)
@@ -160,11 +163,17 @@ namespace DeviceExplorer
                             // 对接受进行解码
                             packageUnwarp(ref device[index], udpRecv, ip);
 
-                            if (index >= 1000) index = 0;
-
                             string name = getHostNameFun(BIA.Value.ToString());
 
                             addItemTree(name,device[index]);
+
+                            index++;
+                            if (index >= MaxDevicesNumber)
+                            {
+                                MessageBox.Show("超出设备上限！", "警告",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                index = 0;
+                            }
 
                             udpConnect.Close();
                         }
@@ -181,9 +190,6 @@ namespace DeviceExplorer
                         String mask = RSM.Value.ToString();
                         String remoteIp = RIA.Value.ToString();
                         String boardcastIP = GetBroadcast(remoteIp, mask);
-                        // 计时器线程
-                        clock = new Thread(clockCount);
-                        clock.Start();
 
                         // 清空设备列表
                         this.treeView1.Nodes.Clear();
@@ -218,9 +224,13 @@ namespace DeviceExplorer
                                 packageUnwarp(ref device[index], udpRecv, ip);
 
                                 // 当index大于最大设备数组，重置index
-                                if (index >= MaxDevicesNumber) index = 0;
-
-                                // 将设备添加到listbox中
+                                if (index >= MaxDevicesNumber)
+                                {
+                                    MessageBox.Show("超出设备上限！", "警告", 
+                                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    index = 0;
+                                }
+                                // 将设备添加到treeview中
                                 string name = RIA.Value.ToString();
                                 addItemTree(name, device[index]);
                                 index++;
@@ -235,7 +245,6 @@ namespace DeviceExplorer
                             // 显示共捕捉输出设备数
                             this.LabelDevicesNumber.Text = index.ToString();
                             this.LabelStatusText.Text = "接收成功！已接受数目：" + index.ToString();
-                            needToFlush = false;
                             // 关闭udp连接
                             udpConnect.Close();
                         }
@@ -250,12 +259,19 @@ namespace DeviceExplorer
         // 停止按钮的Event
         private void ButtonStop_Click(object sender, EventArgs e)
         {
+            RefreshButton.Enabled = false;
             ButtonStop.Enabled = false;
             ButtonStart.Enabled = true;
+            ComboBoxBrowseMode.Enabled = true;
+            TextBoxTimeSet.Enabled = true;
+            ButtonTimeSet.Enabled = true;
+            RefreshButton.Enabled = true;
+            BIA.Enabled = true;
+
             // 关闭定时器线程
-            clock.Abort();
-            IsStart = false;
             this.LabelStatusText.Text = "成功关闭";
+            timer1.Enabled = false;
+            timer1.Stop();
 
         }
 
@@ -419,7 +435,6 @@ namespace DeviceExplorer
             ComboBoxBrowseMode.SelectedIndex = 0;
         }
 
-
         // 方法定义=======================================================
         // 远程子网广播地址计算
         public static string GetBroadcast(string ipAddress, string subnetMask)
@@ -500,15 +515,11 @@ namespace DeviceExplorer
         }
 
         // 线程定义=======================================================
-        // 时钟线程
-        public void clockCount()
+        // 时钟定时器
+        private void timer1_Tick(object sender, EventArgs e)
         {
-            // 线程休眠Time，之后改变状态
-            while (true)
-            {
-                Thread.Sleep(ClockCountTime);
-                index = 0;
-            }
+            RefreshButton.Enabled = true;
+            timer1.Stop();
         }
     }
 

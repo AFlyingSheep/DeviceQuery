@@ -28,3 +28,13 @@ D:\GitHub\device-query\obj\Debug\DeviceExplorer.csproj.GenerateResource.cache
 D:\GitHub\device-query\obj\Debug\DeviceExplorer.csproj.CoreCompileInputs.cache
 D:\GitHub\device-query\obj\Debug\DeviceExplorer.exe
 D:\GitHub\device-query\obj\Debug\DeviceExplorer.pdb
+D:\Users\赵阳\Desktop\123123\git\bin\Debug\DeviceExplorer.exe.config
+D:\Users\赵阳\Desktop\123123\git\bin\Debug\DeviceExplorer.exe
+D:\Users\赵阳\Desktop\123123\git\bin\Debug\DeviceExplorer.pdb
+D:\Users\赵阳\Desktop\123123\git\obj\Debug\DeviceExplorer.csprojAssemblyReference.cache
+D:\Users\赵阳\Desktop\123123\git\obj\Debug\DeviceExplorer.DeviceExplorer.resources
+D:\Users\赵阳\Desktop\123123\git\obj\Debug\DeviceExplorer.Properties.Resources.resources
+D:\Users\赵阳\Desktop\123123\git\obj\Debug\DeviceExplorer.csproj.GenerateResource.cache
+D:\Users\赵阳\Desktop\123123\git\obj\Debug\DeviceExplorer.csproj.CoreCompileInputs.cache
+D:\Users\赵阳\Desktop\123123\git\obj\Debug\DeviceExplorer.exe
+D:\Users\赵阳\Desktop\123123\git\obj\Debug\DeviceExplorer.pdb
