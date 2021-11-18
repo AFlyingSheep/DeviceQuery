@@ -176,7 +176,8 @@ namespace DeviceExplorer
             IPAddress ip = ipAddressTextBox1.Value;
             if (ip.ToString() == "127.0.0.1")
             {
-                // 去掉回环发送，我也不知道为啥要去掉，其实不去掉没问题
+                // 去掉回环发送，我也不知道为啥要去掉，其实不去掉没问题 
+                // 二楼评论 自交是吧
                 MessageBox.Show("禁止回环发送！", "错误！", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
