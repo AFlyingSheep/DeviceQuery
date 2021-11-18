@@ -732,7 +732,7 @@ namespace DeviceExplorer
                     return;
                 }
                 String []nowTimes = DateTime.Now.ToLongTimeString().ToString().
-                    Split(new char[] {'\\',':' });
+                    Split(new char[] {'/',':' });
                 String nowTime = nowTimes[0] + "-" + nowTimes[1] + "-" + nowTimes[2];
                 String fileName = DateTime.Now.ToShortDateString().ToString() + "-" + nowTime + "-" + "Device.txt";
                 StreamWriter streamWriter = new StreamWriter(savePath + "\\" + fileName, true);
