@@ -74,6 +74,7 @@ namespace DeviceExplorer
                             MessageBox.Show("IP地址无效！", "错误！", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             stopFunc();
                             this.LabelStatusText.Text = "接收失败！" + index.ToString();
+                            udpConnect.Close();
                             return;
                         }
                         // 显示共捕捉输出设备数
@@ -147,6 +148,7 @@ namespace DeviceExplorer
                         {
                             MessageBox.Show("IP地址无效！", "错误！", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             this.LabelStatusText.Text = "接收失败！" + index.ToString();
+                            udpConnect.Close();
                             stopFunc();
                             return;
                         }
