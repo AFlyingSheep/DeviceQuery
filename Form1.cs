@@ -56,11 +56,6 @@ namespace DeviceExplorer
             index = 0;
             this.treeView1.Nodes.Clear();
 
-            //定时器开始
-            timer1.Interval = ClockCountTime;
-            timer1.Enabled = true;
-            timer1.Start();
-
             //模式选择 0 1 2 3
             int item = ComboBoxBrowseMode.SelectedIndex;
             switch (item)
@@ -85,6 +80,7 @@ namespace DeviceExplorer
                         this.LabelDevicesNumber.Text = index.ToString();
                         this.LabelStatusText.Text = "接收成功！已接受数目：" + index.ToString();
 
+                        timerOpen();
                         break;
                     }
                 case 1:
@@ -122,6 +118,7 @@ namespace DeviceExplorer
                         this.LabelStatusText.Text = "接收成功！已接受数目：" + index.ToString();
                         this.LabelDevicesNumber.Text = index.ToString();
 
+                        timerOpen();
 
                         break;
                     }
@@ -155,6 +152,8 @@ namespace DeviceExplorer
                         // 显示共捕捉输出设备数
                         this.LabelDevicesNumber.Text = index.ToString();
                         this.LabelStatusText.Text = "接收成功！已接受数目：" + index.ToString();
+
+                        timerOpen();
 
                         break;
                     }
@@ -438,33 +437,30 @@ namespace DeviceExplorer
                 // 接收回传报文
                 try
                 {
-                    while (true)
+                    // udpRecv接收数组，单次接收
+                    // 读取缓冲区数据
+                    udpRecv = udpConnect.Receive(ref localIpep);
+                    IPAddress ip = localIpep.Address;
+                    if (String.Equals(ip.ToString(), "127.0.0.1"))
                     {
-                        // udpRecv接收数组，单次接收
-                        // 读取缓冲区数据
-                        udpRecv = udpConnect.Receive(ref localIpep);
-                        IPAddress ip = localIpep.Address;
-                        if (String.Equals(ip.ToString(), "127.0.0.1"))
-                        {
-                            continue;
-                        }
-
-                        // 数组解包
-                        packageUnwarp(ref device[index], udpRecv, ip);
-
-                        // 当index大于最大设备数组，重置index
-                        if (index >= MaxDevicesNumber)
-                        {
-                            MessageBox.Show("超出设备上限！", "警告",
-                                MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            index = 0;
-                        }
-                        // 将设备添加到treeview中
-                        string name = RIA.Value.ToString() + "所在的子网";
-                        addItemTree(name, device[index]);
-                        index++;
-                        Application.DoEvents();
+                        continue;
                     }
+
+                    // 数组解包
+                    packageUnwarp(ref device[index], udpRecv, ip);
+
+                    // 当index大于最大设备数组，重置index
+                    if (index >= MaxDevicesNumber)
+                    {
+                        MessageBox.Show("超出设备上限！", "警告",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        index = 0;
+                    }
+                    // 将设备添加到treeview中
+                    string name = RIA.Value.ToString() + "所在的子网";
+                    addItemTree(name, device[index]);
+                    index++;
+                    Application.DoEvents();
                 }
                 catch (Exception ex)
                 {
@@ -482,6 +478,22 @@ namespace DeviceExplorer
 
         // 方法定义=======================================================
        
+        // 开启定时器
+        private void timerOpen()
+        {
+            //定时器开始
+            timer1.Interval = ClockCountTime;
+            timer1.Enabled = true;
+            timer1.Start();
+        }
+
+        //关闭定时器
+        private void timerClose()
+        {
+            timer1.Enabled = false;
+            timer1.Stop();
+        }
+
         // 停止按钮
         private void stopFunc()
         {
