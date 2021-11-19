@@ -174,6 +174,7 @@ namespace DeviceExplorer
         {
             // 清空listbox内容
             this.treeView1.Nodes.Clear();
+            index = 0;
         }
 
         // 给定ip地址的模型-添加按钮单击Event
@@ -426,7 +427,7 @@ namespace DeviceExplorer
 
                 // 发送UDP访问报文
                 udpConnect = new UdpClient(localIpep);
-                udpConnect.Client.ReceiveTimeout = 10;
+                udpConnect.Client.ReceiveTimeout = delayTime;
                 byte[] sendbytes = { 0x63, 00, 00, 00, 00, 00, 00,
                         00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
                         00, 00, 00, 00, 00 };
