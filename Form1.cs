@@ -644,10 +644,10 @@ namespace DeviceExplorer
 
             
             treeView1.SelectedNode = treeView1.Nodes[0];
-            // 父节点展开
-            treeView1.ExpandAll();
             // 子节点插入
             treeView1.SelectedNode.Nodes.Add(device.ips + "-" + device.DeviceName, device.ips + "-" + device.DeviceName,1,1);
+            // 父节点展开
+            treeView1.ExpandAll();
         }
 
         // 通过ip地址获得主机名称
@@ -793,6 +793,23 @@ namespace DeviceExplorer
             {
                 MessageBox.Show("输入错误！", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                TreeNode tn = treeView1.GetNodeAt(e.X, e.Y);
+                if (e.Node.Level == 1)
+                {
+                    treeView1.SelectedNode = tn;
+                }
+            }
+        }
+
+        private void 设备属性ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            getProperties(treeView1.SelectedNode);
         }
     }
 

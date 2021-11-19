@@ -52,7 +52,6 @@ namespace DeviceExplorer
             this.LabelRemoteSubnetMask = new System.Windows.Forms.Label();
             this.ComboBoxBrowseMode = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.ipAddressTextBox1 = new FVD.Common.IPAddressTextBox();
             this.ButtonRemove = new System.Windows.Forms.Button();
             this.ButtonAdd = new System.Windows.Forms.Button();
             this.ListBoxPointToPointIPAddress = new System.Windows.Forms.ListBox();
@@ -60,6 +59,8 @@ namespace DeviceExplorer
             this.ButtonSave = new System.Windows.Forms.Button();
             this.RefreshButton = new System.Windows.Forms.Button();
             this.treeView1 = new System.Windows.Forms.TreeView();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.设备属性ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.LabelDevicesNumber = new System.Windows.Forms.Label();
             this.LabelDevicesFound = new System.Windows.Forms.Label();
@@ -75,15 +76,17 @@ namespace DeviceExplorer
             this.TextBoxTimeSet = new System.Windows.Forms.TextBox();
             this.ButtonTimeSet = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.RSM = new FVD.Common.IPAddressTextBox();
-            this.RIA = new FVD.Common.IPAddressTextBox();
-            this.BIA = new FVD.Common.IPAddressTextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.delayBox = new System.Windows.Forms.TextBox();
             this.DelayButtom = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
+            this.RSM = new FVD.Common.IPAddressTextBox();
+            this.RIA = new FVD.Common.IPAddressTextBox();
+            this.BIA = new FVD.Common.IPAddressTextBox();
+            this.ipAddressTextBox1 = new FVD.Common.IPAddressTextBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // LabelBindingIPAddress
@@ -149,16 +152,6 @@ namespace DeviceExplorer
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(278, 426);
             this.panel1.TabIndex = 5;
-            // 
-            // ipAddressTextBox1
-            // 
-            this.ipAddressTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ipAddressTextBox1.Location = new System.Drawing.Point(16, 27);
-            this.ipAddressTextBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.ipAddressTextBox1.Name = "ipAddressTextBox1";
-            this.ipAddressTextBox1.Size = new System.Drawing.Size(167, 35);
-            this.ipAddressTextBox1.TabIndex = 13;
-            this.ipAddressTextBox1.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBox1.Value")));
             // 
             // ButtonRemove
             // 
@@ -229,6 +222,7 @@ namespace DeviceExplorer
             // 
             // treeView1
             // 
+            this.treeView1.ContextMenuStrip = this.contextMenuStrip1;
             this.treeView1.ImageIndex = 0;
             this.treeView1.ImageList = this.imageList1;
             this.treeView1.Location = new System.Drawing.Point(20, 27);
@@ -236,7 +230,23 @@ namespace DeviceExplorer
             this.treeView1.SelectedImageIndex = 0;
             this.treeView1.Size = new System.Drawing.Size(499, 356);
             this.treeView1.TabIndex = 6;
+            this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
             this.treeView1.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseDoubleClick);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.设备属性ToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(211, 56);
+            // 
+            // 设备属性ToolStripMenuItem
+            // 
+            this.设备属性ToolStripMenuItem.Name = "设备属性ToolStripMenuItem";
+            this.设备属性ToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.设备属性ToolStripMenuItem.Text = "设备属性";
+            this.设备属性ToolStripMenuItem.Click += new System.EventHandler(this.设备属性ToolStripMenuItem_Click);
             // 
             // imageList1
             // 
@@ -371,36 +381,6 @@ namespace DeviceExplorer
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // RSM
-            // 
-            this.RSM.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.RSM.Location = new System.Drawing.Point(910, 51);
-            this.RSM.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.RSM.Name = "RSM";
-            this.RSM.Size = new System.Drawing.Size(167, 28);
-            this.RSM.TabIndex = 14;
-            this.RSM.Value = ((System.Net.IPAddress)(resources.GetObject("RSM.Value")));
-            // 
-            // RIA
-            // 
-            this.RIA.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.RIA.Location = new System.Drawing.Point(910, 18);
-            this.RIA.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.RIA.Name = "RIA";
-            this.RIA.Size = new System.Drawing.Size(167, 35);
-            this.RIA.TabIndex = 12;
-            this.RIA.Value = ((System.Net.IPAddress)(resources.GetObject("RIA.Value")));
-            // 
-            // BIA
-            // 
-            this.BIA.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.BIA.Location = new System.Drawing.Point(203, 27);
-            this.BIA.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.BIA.Name = "BIA";
-            this.BIA.Size = new System.Drawing.Size(167, 29);
-            this.BIA.TabIndex = 11;
-            this.BIA.Value = ((System.Net.IPAddress)(resources.GetObject("BIA.Value")));
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -437,6 +417,46 @@ namespace DeviceExplorer
             this.label2.TabIndex = 21;
             this.label2.Text = "ms";
             // 
+            // RSM
+            // 
+            this.RSM.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.RSM.Location = new System.Drawing.Point(910, 51);
+            this.RSM.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.RSM.Name = "RSM";
+            this.RSM.Size = new System.Drawing.Size(167, 28);
+            this.RSM.TabIndex = 14;
+            this.RSM.Value = ((System.Net.IPAddress)(resources.GetObject("RSM.Value")));
+            // 
+            // RIA
+            // 
+            this.RIA.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.RIA.Location = new System.Drawing.Point(910, 18);
+            this.RIA.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.RIA.Name = "RIA";
+            this.RIA.Size = new System.Drawing.Size(167, 35);
+            this.RIA.TabIndex = 12;
+            this.RIA.Value = ((System.Net.IPAddress)(resources.GetObject("RIA.Value")));
+            // 
+            // BIA
+            // 
+            this.BIA.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.BIA.Location = new System.Drawing.Point(203, 27);
+            this.BIA.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BIA.Name = "BIA";
+            this.BIA.Size = new System.Drawing.Size(167, 29);
+            this.BIA.TabIndex = 11;
+            this.BIA.Value = ((System.Net.IPAddress)(resources.GetObject("BIA.Value")));
+            // 
+            // ipAddressTextBox1
+            // 
+            this.ipAddressTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ipAddressTextBox1.Location = new System.Drawing.Point(16, 27);
+            this.ipAddressTextBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ipAddressTextBox1.Name = "ipAddressTextBox1";
+            this.ipAddressTextBox1.Size = new System.Drawing.Size(167, 35);
+            this.ipAddressTextBox1.TabIndex = 13;
+            this.ipAddressTextBox1.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBox1.Value")));
+            // 
             // DeviceExplorer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -471,6 +491,7 @@ namespace DeviceExplorer
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -514,6 +535,8 @@ namespace DeviceExplorer
         private TextBox delayBox;
         private Button DelayButtom;
         private Label label2;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem 设备属性ToolStripMenuItem;
     }
 }
 
