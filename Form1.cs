@@ -31,7 +31,7 @@ namespace DeviceExplorer
         public int[] maskBox = { 0, 1, 2, 4, 8, 16, 32, 64, 128, 256 };
 
         public static int delayTime = 100;
-
+        
         public DeviceExplorer()
         {
             InitializeComponent();
@@ -320,6 +320,7 @@ namespace DeviceExplorer
             // 发送UDP访问报文
             udpConnect = new UdpClient(localIpep);
             udpConnect.Client.ReceiveTimeout = 100;
+            udpConnect.Client.ReceiveBufferSize = 204800;
             byte[] sendbytes = { 0x63, 00, 00, 00, 00, 00, 00,
                             00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
                             00, 00, 00, 00, 00 };
@@ -379,6 +380,7 @@ namespace DeviceExplorer
             localIpep = new IPEndPoint(BIA.Value, 44814); // 本机IP和监听端口号
             udpConnect = new UdpClient(localIpep);
             udpConnect.Client.ReceiveTimeout = 100;
+            udpConnect.Client.ReceiveBufferSize = 204800;
             byte[] sendbytes = { 0x63, 00, 00, 00, 00, 00, 00,
                             00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
                             00, 00, 00, 00, 00 };
@@ -433,6 +435,7 @@ namespace DeviceExplorer
                 // 发送UDP访问报文
                 udpConnect = new UdpClient(localIpep);
                 udpConnect.Client.ReceiveTimeout = delayTime;
+                udpConnect.Client.ReceiveBufferSize = 204800;
                 byte[] sendbytes = { 0x63, 00, 00, 00, 00, 00, 00,
                         00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00,
                         00, 00, 00, 00, 00 };
