@@ -723,8 +723,137 @@ namespace DeviceExplorer
         // 时钟定时器
         private void timer1_Tick(object sender, EventArgs e)
         {
-            RefreshButton.Enabled = true;
-            timer1.Stop();
+            if (checkBox1.Checked == false)
+            {
+                RefreshButton.Enabled = true;
+                timer1.Stop();
+            }
+            else
+            {
+                // 按钮限制
+                ButtonStop.Enabled = true;
+                ButtonStart.Enabled = false;
+                ComboBoxBrowseMode.Enabled = false;
+                TextBoxTimeSet.Enabled = false;
+                ButtonTimeSet.Enabled = false;
+                RefreshButton.Enabled = false;
+                BIA.Enabled = false;
+                delayBox.Enabled = false;
+                DelayButtom.Enabled = false;
+
+
+                index = 0;
+                this.treeView1.Nodes.Clear();
+
+                //模式选择 0 1 2 3
+                int item = ComboBoxBrowseMode.SelectedIndex;
+                switch (item)
+                {
+                    // 本地广播
+                    case 0:
+                        {
+                            // 状态变更
+                            this.LabelStatusText.Text = "发送中……";
+                            try
+                            {
+                                case0SendAndRecieve();
+                            }
+                            catch (System.Net.Sockets.SocketException ex)
+                            {
+                                MessageBox.Show("IP地址无效！", "错误！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                stopFunc();
+                                this.LabelStatusText.Text = "接收失败！" + index.ToString();
+                                udpConnect.Close();
+                                return;
+                            }
+                            // 显示共捕捉输出设备数
+                            this.LabelDevicesNumber.Text = index.ToString();
+                            this.LabelStatusText.Text = "接收成功！已接受数目：" + index.ToString();
+
+                            timerOpen();
+                            break;
+                        }
+                    case 1:
+                        {
+                            // 统计同游多少条需要发送的ip并转化为数组
+                            int sumIp = ListBoxPointToPointIPAddress.Items.Count;
+                            String[] ipString = new string[sumIp];
+
+                            // 将ip转化为string存入字符串数组
+                            for (int i = 0; i < sumIp; i++)
+                            {
+                                ipString[i] = ListBoxPointToPointIPAddress.Items[i].ToString();
+                            }
+
+                            // 更改状态
+                            this.treeView1.Nodes.Clear();
+                            this.LabelStatusText.Text = "发送中……";
+
+                            // 向每个目标发送udp
+                            for (int i = 0; i < sumIp; i++)
+                            {
+                                try
+                                {
+                                    case1SendAndRecieve(ipString[i]);
+                                }
+                                catch (System.Net.Sockets.SocketException ex)
+                                {
+                                    MessageBox.Show("IP地址无效！请检查后输入！", "错误！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    this.LabelStatusText.Text = "接收失败！" + index.ToString();
+                                    udpConnect.Close();
+                                    LabelDevicesNumber.Text = "Error";
+                                    treeView1.Nodes.Clear();
+                                    stopFunc();
+                                    return;
+                                }
+                            }
+
+                            this.LabelStatusText.Text = "接收成功！已接受数目：" + index.ToString();
+                            this.LabelDevicesNumber.Text = index.ToString();
+
+                            timerOpen();
+
+                            break;
+                        }
+                    case 2:
+                        {
+                            //子网掩码、IP及广播地址的计算
+                            String mask = RSM.Value.ToString();
+                            String remoteIp = RIA.Value.ToString();
+                            int countIp = 0;
+                            String[] boardcastIP = getBoardIP(remoteIp, mask, ref countIp);
+
+                            // 清空设备列表
+                            this.treeView1.Nodes.Clear();
+
+                            // 状态变更
+                            this.LabelStatusText.Text = "发送中……";
+
+                            try
+                            {
+                                case2SendAndRecieve(boardcastIP);
+                            }
+                            catch (System.Net.Sockets.SocketException ex)
+                            {
+                                MessageBox.Show("IP地址无效！", "错误！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                this.LabelStatusText.Text = "接收失败！" + index.ToString();
+                                udpConnect.Close();
+                                stopFunc();
+                                return;
+                            }
+
+
+                            // 显示共捕捉输出设备数
+                            this.LabelDevicesNumber.Text = index.ToString();
+                            this.LabelStatusText.Text = "接收成功！已接受数目：" + index.ToString();
+
+                            timerOpen();
+
+                            break;
+                        }
+                    default: break;
+                }
+            }
         }
 
         private void ButtonSave_Click(object sender, EventArgs e)
@@ -831,6 +960,11 @@ namespace DeviceExplorer
         private void 设备属性ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             getProperties(treeView1.SelectedNode);
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 

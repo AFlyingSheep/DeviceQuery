@@ -52,10 +52,12 @@ namespace DeviceExplorer
             this.LabelRemoteSubnetMask = new System.Windows.Forms.Label();
             this.ComboBoxBrowseMode = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.ipAddressTextBox1 = new FVD.Common.IPAddressTextBox();
             this.ButtonRemove = new System.Windows.Forms.Button();
             this.ButtonAdd = new System.Windows.Forms.Button();
             this.ListBoxPointToPointIPAddress = new System.Windows.Forms.ListBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.ButtonSave = new System.Windows.Forms.Button();
             this.RefreshButton = new System.Windows.Forms.Button();
             this.treeView1 = new System.Windows.Forms.TreeView();
@@ -83,7 +85,6 @@ namespace DeviceExplorer
             this.RSM = new FVD.Common.IPAddressTextBox();
             this.RIA = new FVD.Common.IPAddressTextBox();
             this.BIA = new FVD.Common.IPAddressTextBox();
-            this.ipAddressTextBox1 = new FVD.Common.IPAddressTextBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -153,6 +154,16 @@ namespace DeviceExplorer
             this.panel1.Size = new System.Drawing.Size(278, 426);
             this.panel1.TabIndex = 5;
             // 
+            // ipAddressTextBox1
+            // 
+            this.ipAddressTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ipAddressTextBox1.Location = new System.Drawing.Point(16, 27);
+            this.ipAddressTextBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ipAddressTextBox1.Name = "ipAddressTextBox1";
+            this.ipAddressTextBox1.Size = new System.Drawing.Size(167, 35);
+            this.ipAddressTextBox1.TabIndex = 13;
+            this.ipAddressTextBox1.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBox1.Value")));
+            // 
             // ButtonRemove
             // 
             this.ButtonRemove.Location = new System.Drawing.Point(190, 69);
@@ -185,6 +196,7 @@ namespace DeviceExplorer
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.checkBox1);
             this.panel2.Controls.Add(this.ButtonSave);
             this.panel2.Controls.Add(this.RefreshButton);
             this.panel2.Controls.Add(this.treeView1);
@@ -198,6 +210,17 @@ namespace DeviceExplorer
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(697, 426);
             this.panel2.TabIndex = 6;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(526, 150);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(101, 19);
+            this.checkBox1.TabIndex = 22;
+            this.checkBox1.Text = "Auto find";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // ButtonSave
             // 
@@ -239,12 +262,12 @@ namespace DeviceExplorer
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.设备属性ToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(211, 56);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(139, 28);
             // 
             // 设备属性ToolStripMenuItem
             // 
             this.设备属性ToolStripMenuItem.Name = "设备属性ToolStripMenuItem";
-            this.设备属性ToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.设备属性ToolStripMenuItem.Size = new System.Drawing.Size(138, 24);
             this.设备属性ToolStripMenuItem.Text = "设备属性";
             this.设备属性ToolStripMenuItem.Click += new System.EventHandler(this.设备属性ToolStripMenuItem_Click);
             // 
@@ -447,16 +470,6 @@ namespace DeviceExplorer
             this.BIA.TabIndex = 11;
             this.BIA.Value = ((System.Net.IPAddress)(resources.GetObject("BIA.Value")));
             // 
-            // ipAddressTextBox1
-            // 
-            this.ipAddressTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ipAddressTextBox1.Location = new System.Drawing.Point(16, 27);
-            this.ipAddressTextBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.ipAddressTextBox1.Name = "ipAddressTextBox1";
-            this.ipAddressTextBox1.Size = new System.Drawing.Size(167, 35);
-            this.ipAddressTextBox1.TabIndex = 13;
-            this.ipAddressTextBox1.Value = ((System.Net.IPAddress)(resources.GetObject("ipAddressTextBox1.Value")));
-            // 
             // DeviceExplorer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -537,6 +550,7 @@ namespace DeviceExplorer
         private Label label2;
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem 设备属性ToolStripMenuItem;
+        private CheckBox checkBox1;
     }
 }
 
