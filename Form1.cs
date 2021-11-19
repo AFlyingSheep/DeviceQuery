@@ -108,8 +108,11 @@ namespace DeviceExplorer
                             }
                             catch (System.Net.Sockets.SocketException ex)
                             {
-                                MessageBox.Show("IP地址无效！", "错误！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                MessageBox.Show("IP地址无效！请检查后输入！", "错误！", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 this.LabelStatusText.Text = "接收失败！" + index.ToString();
+                                udpConnect.Close();
+                                LabelDevicesNumber.Text = "Error";
+                                treeView1.Nodes.Clear();
                                 stopFunc();
                                 return;
                             }
